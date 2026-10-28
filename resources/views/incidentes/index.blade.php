@@ -6,6 +6,15 @@
         <title>Incident Tracker</title>
 
         <link rel="stylesheet" href="{{ asset('css/incidentes.css') }}">
+
+        <!-- CSS de Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+
+        <!-- JavaScripts de Leaflet -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+        <script src="{{ asset('js/mapa-index.js') }}" defer></script>
     </head>
 
     <body>
@@ -13,21 +22,18 @@
             <h1>Incident Tracker</h1>
             <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
         </header>
+        
         <main class="contenedor">
             <!-- Panel izquiedo -->
-             <aside class="panel-izquierdo">
+            <aside class="panel-izquierdo">
 
                 <!-- Seccion de filtros y agregar incidente -->
                 <h2>Incidentes</h2>
 
                 <form id="form-filtros">
 
-                    <label for="anio">Año: </label>
-                    <select id="anio" name="anio">
-                        <option value="">Todos los años</option>
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                    </select>
+                    <label for="fecha">Fecha: </label>
+                    <input type="date" id="fecha" name="fecha">
 
                     <label for="gravedad">Gravedad: </label>
                     <select id="gravedad" name="gravedad">
@@ -71,7 +77,7 @@
                         <p>Todavia no hay incidentes registrados.</p>
                     @endforelse
                 </section>
-             </aside>
+            </aside>
 
              <!-- Mapa Leaflet -->
              <section class="panel-mapa">

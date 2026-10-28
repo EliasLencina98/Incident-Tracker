@@ -56,10 +56,12 @@ body {
     font-size: 18px;
 }
 
-#form-filtros select {
+
+#form-filtros select, #form-filtros #fecha {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-family: inherit;
 }
 
 /*botones*/
@@ -76,17 +78,28 @@ body {
     color: white;
     border: none;
     margin-top: 10px;
+    font-size: 16px;
+
 }
 
 .btn-agregar {
     display: block;
     text-align: center;
     text-decoration: none;
+    font-size: 16px;
 
     background-color: white;
     border: 1px solid #356bc0;
     color: #356bc0;
     margin-top: 12px;
+}
+
+.btn-filtrar:hover {
+    text-decoration: underline;
+}
+
+.btn-agregar:hover {
+    text-decoration: underline;
 }
 
 .lista-incidentes {
@@ -120,7 +133,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    height: 550px;
+    min-height: 700px;
     background-color: #e4e9ef;
     border: 1px solid #ccd3dc;
     border-radius: 8px;
@@ -129,3 +142,105 @@ body {
 #mapa p {
     color: #667085;
 }
+
+/*Formulario de registro de incidentes*/
+
+.registro-contenedor {
+    display: grid;
+    grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+    gap: 20px;
+    padding: 25px;
+    align-items: start;
+}
+
+.registro-contenedor, .formulario-contenedor {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    
+}
+
+/* FORMULARIO */
+.formulario-contenedor {
+    min-height: 700px;
+}
+
+.formulario-contenedor h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #243c60;
+}
+
+.formulario-contenedor form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.formulario-contenedor label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.formulario-contenedor input, .formulario-contenedor select, .formulario-contenedor textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.formulario-contenedor textarea {
+    resize: vertical;
+}
+
+.formulario-contenedor a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    color: #356bc0;
+    border: 1px solid #356bc0;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.formulario-contenedor a:hover {
+    text-decoration: underline;
+}
+
+/* MAPA REGISTRO */
+.registro-mapa {
+    background-color: white;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.registro-mapa h2 {
+    margin-top: 0;
+    color: #243c60;
+}
+
+#mapa-seleccion {
+    width: 100%;
+    height: 700px;
+    background-color: #e4e9f0;
+    border-radius: 8px;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 900px) {
+    .registro-contenedor {
+        grid-template-columns: 1fr;
+    }
+
+    #mapa-seleccion {
+        height: 350px;
+    }
+}
+
