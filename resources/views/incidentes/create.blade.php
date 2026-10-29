@@ -76,7 +76,7 @@
                 <input type="hidden" id="latitud" name="latitud" required>
                 <input type="hidden" id="longitud" name="longitud" required>
 
-                <button type="submit" class="btn-filtrar">Guardar Incidente</button>
+                <button type="submit" class="btn btn-agregar">Guardar Incidente</button>
 
                 <a href="{{ route('incidentes.index') }}">Cancelar</a>
             </form>
