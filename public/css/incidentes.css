@@ -1,6 +1,5 @@
 * {
     box-sizing: border-box;
-    font-size: 18px !important;
 }
 
 body {
@@ -59,7 +58,7 @@ body {
 
 
 #form-filtros select, #form-filtros #fecha {
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-family: inherit;
