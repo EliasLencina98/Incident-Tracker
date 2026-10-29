@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +12,8 @@
 
     <!-- CSS de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="" />
 
     <!-- JavaScripts de Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
@@ -73,8 +74,17 @@
                 <textarea id="accion_correlativa" name="accion_correlativa" rows="4" required></textarea>
 
                 <!-- latitud y longitud - Leaflet -->
-                <input type="hidden" id="latitud" name="latitud" required>
-                <input type="hidden" id="longitud" name="longitud" required>
+                <div>
+                    <h3>Seleccionar en el mapa</h3>
+                    <div>
+                        <label for="">Latitud:</label>
+                        <input type="number" id="latitud" name="latitud" required readonly>
+                    </div>
+                    <div>
+                        <label for="">Longitud:</label>
+                        <input type="number" id="longitud" name="longitud" required readonly>
+                    </div>
+                </div>
 
                 <button type="submit" class="btn btn-agregar">Guardar Incidente</button>
 
@@ -86,9 +96,9 @@
         <section class="registro-mapa">
             <h2>Ubicacion del incidente</h2>
 
-            <div id="mapa-seleccion"> 
+            <div id="mapa-seleccion">
             </div>
-            
+
             <p id="coordenadas-seleccionadas">
                 Selecciona en el mapa para ver las coordenadas
             </p>
@@ -99,4 +109,5 @@
 
 
 </body>
+
 </html>

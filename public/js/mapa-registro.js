@@ -1,5 +1,5 @@
 //Inicializamos el mapa centrado en Neuquen
-const mapa = L.map("mapa-seleccion").setView([-38.9516, -68.0591], 9);
+const mapa = L.map("mapa-seleccion").setView([-38.9516, -68.0591], 10);
 
 //Agregamos capa de mosaico de OpenStreetMap
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
