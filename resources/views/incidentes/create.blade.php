@@ -27,12 +27,15 @@
         <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
     </header>
 
+    <a href="{{route('incidentes.index')}}"><- Volver atras</a>
+
     <main class="registro-contenedor">
+        
 
         <section class="formulario-contenedor">
             <h2>Registro de incidentes</h2>
 
-            <form action="#" method="POST">
+            <form action="{{ route('incidentes.store') }}" method="POST">
                 @csrf
 
                 <label for="fecha">Fecha de incidente: </label>
@@ -71,7 +74,7 @@
                 </select>
 
                 <label for="accion_correlativa">Accionar correlativo: </label>
-                <textarea id="accion_correlativa" name="accion_correlativa" rows="4" required></textarea>
+                <textarea id="accion_correlativa" name="accion" rows="4" required></textarea>
 
                 <!-- latitud y longitud - Leaflet -->
                 <div>

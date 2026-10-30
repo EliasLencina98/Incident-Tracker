@@ -10,20 +10,36 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //marcador
 let marcador = null;
 
-//se recupera el evento de hacer click dado por usuario sobre el mapa 
-mapa.on ("click", function(evento){
-const latitud = evento.latlng.lat;
-const longitud = evento.latlng.lng;
 
-//Si existe un marcador anterior, se borra
-if(marcador !== null){
-    mapa.removeLayer(marcador);
+async function buscarDatos() {
+    const url = 'api/incidentes/todas';
+    const respuesta = await fetch(url);
+    if (!respuesta.ok) throw new Error('Error HTTP');
+    const resultado = await respuesta.json();
+    console.log(resultado);
+
+    resultado.forEach(incidente => {
+        L.marker([incidente['latitud'], incidente['longitud']]).addTo(mapa);
+    });
+
 }
 
-//Se crea un marcador en la ubicacion seleccionada
-marcador = L.marker([latitud, longitud]).addTo(mapa);
+buscarDatos();
 
-//Mostramos las coordenadas al usuario 
-document.getElementById('coordenadas-seleccionadas').textContent = `Latitud: ${ latitud.toPrecision(7) } | Longitud: ${ longitud.toPrecision(7) }`;
+// //se recupera el evento de hacer click dado por usuario sobre el mapa 
+// mapa.on ("click", function(evento){
+// const latitud = evento.latlng.lat;
+// const longitud = evento.latlng.lng;
 
-});
+// //Si existe un marcador anterior, se borra
+// if(marcador !== null){
+//     mapa.removeLayer(marcador);
+// }
+
+// //Se crea un marcador en la ubicacion seleccionada
+// marcador = L.marker([latitud, longitud]).addTo(mapa);
+
+// //Mostramos las coordenadas al usuario 
+// document.getElementById('coordenadas-seleccionadas').textContent = `Latitud: ${ latitud.toPrecision(7) } | Longitud: ${ longitud.toPrecision(7) }`;
+
+// });

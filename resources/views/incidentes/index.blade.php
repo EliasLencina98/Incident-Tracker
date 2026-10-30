@@ -38,11 +38,11 @@
 
                 <label for="fecha">Rango de Fecha</label>
 
-                <label for="">Desde:</label>
-                <input type="date" id="fecha" name="fecha">
+                <label for="fecha_inicio">Desde:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio">
 
-                <label for="">Hasta:</label>
-                <input type="date" id="fecha" name="fecha">
+                <label for="fecha_fin">Hasta:</label>
+                <input type="date" id="fecha_fin" name="fecha_fin">
 
                 <label for="gravedad">Gravedad: </label>
                 <select id="gravedad" name="gravedad">
