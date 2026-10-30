@@ -17,5 +17,6 @@ class Incidente extends Model
         "descripcion",
         "causa_raiz",
         "accion_correlativa",
+        "estado",
     ]; 
 }
