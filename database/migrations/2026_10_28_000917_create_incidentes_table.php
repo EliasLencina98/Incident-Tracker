@@ -17,14 +17,15 @@ return new class extends Migration
             $table->date("fecha");
             $table->string("tipo");
             $table->string("gravedad");
-            $table->string("ubicacion")->nullable();    //puede ser NULL (investigacion en curso)
+            $table->string("ubicacion");
 
             $table->decimal("latitud", 10, 8);      // Rango: -90.00000000 a 90.00000000
             $table->decimal("longitud", 11, 8);     // Rango: -180.00000000 a 180.00000000
 
             $table->text("descripcion");
             $table->string("causa_raiz");
-            $table->text("accion_correlativa")->nullable();     //puede ser NULL (investigacion en curso)
+            $table->text("accion_correlativa");
+            $table->string('estado')->default('pendiente')->after('accion_correlativa');    // valor por defecto pendiente
 
             $table->timestamps(); //fecha de subida y modificacion
         });

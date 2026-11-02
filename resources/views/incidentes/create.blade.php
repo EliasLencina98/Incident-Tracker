@@ -30,7 +30,13 @@
     <a href="{{route('incidentes.index')}}"><- Volver atras</a>
 
             <main class="registro-contenedor">
-
+                @if ($errors->any())
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
 
                 <section class="formulario-contenedor">
                     <h2>Registro de incidentes</h2>
@@ -50,7 +56,7 @@
                         </select>
 
                         <label for="gravedad">Gravedad: </label>
-                        <select id="gravedad" name="gravedad">
+                        <select id="gravedad" name="gravedad" required>
                             <option value="">Seleccione gravedad</option>
                             <option value="Leve">Leve</option>
                             <option value="Grave">Grave</option>
@@ -74,12 +80,12 @@
                         </select>
 
                         <label for="accion_correlativa">Accionar correlativo: </label>
-                        <textarea id="accion_correlativa" name="accion" rows="4" required></textarea>
+                        <textarea id="accion_correlativa" name="accion_correlativa" rows="4" required></textarea>
 
                         <label for="estado">Estado: </label>
-                        <select name="estado" id="estado" class="form-control" required>
+                        <select name="estado" id="estado" required>
                             <option value="pendiente" selected>Pendiente</option>
-                            <option value="en_proceso">En proceso</option>
+                            <option value="en proceso">En proceso</option>
                             <option value="resuelto">Resuelto</option>
                         </select>
 
@@ -87,11 +93,11 @@
                         <div>
                             <h3>Seleccionar en el mapa</h3>
                             <div>
-                                <label for="">Latitud:</label>
+                                <label for="latitud">Latitud:</label>
                                 <input type="number" id="latitud" name="latitud" required readonly>
                             </div>
                             <div>
-                                <label for="">Longitud:</label>
+                                <label for="longitud">Longitud:</label>
                                 <input type="number" id="longitud" name="longitud" required readonly>
                             </div>
                         </div>
@@ -115,8 +121,6 @@
 
                 </section>
             </main>
-
-
 
 </body>
 
