@@ -236,7 +236,63 @@ body {
     white-space: pre-line;
 }
 
+/* Iconos en el mapa */
+.icono-leve {
+    filter: hue-rotate(-90deg);
+}
 
+.icono-grave {
+    filter: hue-rotate(-150deg) brightness(135%) saturate(180%);
+}
+
+.icono-fatal {
+    filter: hue-rotate(140deg);
+}
+
+.icono-material {
+    filter: none;
+}
+
+/* Leyenda mapa */
+.leyenda-mapa {
+    padding: 10px 12px;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px #00000030;
+    color: #243c60;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.leyenda-mapa strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.leyenda-mapa span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border-radius: 2px;
+    vertical-align: middle;
+}
+
+.color-leve {
+    background-color: #21854a;
+}
+
+.color-grave {
+    background-color: rgb(236, 236, 21);
+}
+
+.color-fatal {
+    background-color: #c62828;
+}
+
+.color-material {
+    background-color: #356bc0;
+}
 
 
 /*Pendiente*/

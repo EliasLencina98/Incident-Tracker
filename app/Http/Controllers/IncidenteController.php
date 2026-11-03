@@ -27,8 +27,8 @@ class IncidenteController extends Controller
             "gravedad" => ["required", "in:Leve,Grave,Fatal,Danio Material"],
             "ubicacion" => ["string", "required"],
             "descripcion" => ["string", "required"],
-            "causa_raiz" => ["required", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
-            "accion_correlativa" => ["string", "required"],
+            "causa" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
+            "accion_correlativa" => ["nullable","string"],
             "estado" => ["required", "in:pendiente,en proceso,resuelto"],
             "latitud" => ["numeric", "required"],
             "longitud" => ["numeric", "required"]

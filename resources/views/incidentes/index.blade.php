@@ -15,17 +15,19 @@
 
         <!-- JavaScripts de Leaflet -->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+
+        <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js" defer></script>
+
         <script src="{{ asset('js/mapa-index.js') }}" defer></script>
 
     </head>
 
     <body>
         <header class="header">
-            <h1>Incident Tracker</h1>
-            <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
+            <h1>Panel de control de incidentes</h1>
+            <h5>Sistema de visualización y análisis de incidentes viales</h5>
         </header>
 
-        <h2 class="titulo-panel">Panel de control de incidentes</h2>
         @if (session('mensaje'))
             <p>{{ session('mensaje') }}</p>
         @endif

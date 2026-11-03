@@ -71,7 +71,7 @@
                         <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
 
                         <label for="causa_raiz">Causa raiz: </label>
-                        <select id="causa_raiz" name="causa" required>
+                        <select id="causa_raiz" name="causa">
                             <option value="">Seleccione causa</option>
                             <option value="Factor humano">Factor humano</option>
                             <option value="Falla mecanica">Falla mecanica</option>
@@ -80,7 +80,7 @@
                         </select>
 
                         <label for="accion_correlativa">Accionar correlativo: </label>
-                        <textarea id="accion_correlativa" name="accion_correlativa" rows="4" required></textarea>
+                        <textarea id="accion_correlativa" name="accion_correlativa" rows="4"></textarea>
 
                         <label for="estado">Estado: </label>
                         <select name="estado" id="estado" required>
