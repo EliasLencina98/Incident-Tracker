@@ -1,35 +1,36 @@
+
 //Inicializamos el mapa centrado en Neuquen
 const mapa = L.map("mapa").setView([-38.9516, -68.0591], 9);
 
 //Agregamos capa de mosaico de OpenStreetMap
-const capaClara = L.tileLayer(
-    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        maxZoom: 19,
-        attribution:
-            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    },
-).addTo(mapa);
+const mapaClaro = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(mapa);
 
-const capaOscura = L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_dark/{z}/{x}/{y}{r}.png", {
-    maxZoom: 20,
-    attribution: '© <a href="https://stadiamaps.com/">Stadia Maps</a>, © <a href="https://stamen.com/">Stamen Design</a>, © <a href="https://openmaptiles.org/">OpenMapTiles</a> © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+const mapaOscuro = L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?key=cb1_51qx_1_24e563624e6d7319006285fd", {
+        subdomains: "abcd",
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
+                    '&copy; <a href="https://carto.com/attributions">CARTO</a>'
 });
 
-capaClara.addTo(mapa);
 
 //leyendas para marcadores en el mapa
-const leyenda = L.control({ position: "bottomleft" });
-leyenda.onAdd = function () {
+const leyenda = L.control({position: "bottomleft"});
+leyenda.onAdd = function() {
     const contenido = document.createElement("div");
     contenido.className = "leyenda-mapa";
-    contenido.innerHTML = `<strong>Gravedad</strong>
-        <div><span class="color-leve"></span>Leve</div>
+    contenido.innerHTML = `
+        <strong>Gravedad</strong>
+        <div><span class="color-leve"></span> Leve</div>
         <div><span class="color-grave"></span> Grave</div>
         <div><span class="color-fatal"></span> Fatal</div>
-        <div><span class="color-material"></span> Daño material</div>`;
+        <div><span class="color-material"></span> Daño material</div>
+    `;
     return contenido;
-};
+}
 leyenda.addTo(mapa);
 
 /****************************************************************************************************/
@@ -39,77 +40,47 @@ const formFiltros = document.getElementById("form-filtros");
 const msjFiltro = document.querySelector(".msj-filtro");
 const listadoIncidentes = document.getElementById("listado-incidentes");
 
-//Creo grupo de capas
+//Creo grupo de capas y mapa de calor
 const capasIncidentes = L.layerGroup().addTo(mapa);
+const mapaCalor = L.heatLayer([], {radius: 50, blur: 20, maxZoom: 12, minOpacity: 0.3});
 
-let capaDeCalor = null;
-let iscapaDeCalorActivo = false;
+//Panel de contro para mostrar u ocultar capas (marcadores y mapa de calor)
+L.control.layers({"Claro": mapaClaro, "Oscuro": mapaOscuro}, {"Marcadores": capasIncidentes, "Mapa de calor": mapaCalor}).addTo(mapa);
 
-//Botón flotante dentro del mapa para alternar el mapa de calor
-const mapaDeCalorControles = L.Control.extend({
-    options: { position: "topright" },
-    onAdd: function (map) {
-        var btn = L.DomUtil.create("button", "leaflet-bar leaflet-control");
-        btn.textContent = "Mapa de calor";
-        btn.style.backgroundColor = "white";
-        btn.style.border = "2px solid rgba(0,0,0,0.2)";
-        btn.style.padding = "6px 12px";
-        btn.style.cursor = "pointer";
-        btn.style.borderRadius = "4px";
-        btn.style.fontWeight = "bold";
-        btn.style.boxShadow = "0 1px 5px rgba(0,0,0,0.4)";
-
-        L.DomEvent.disableClickPropagation(btn);
-
-        btn.onclick = function () {
-            iscapaDeCalorActivo = !iscapaDeCalorActivo;
-            if (iscapaDeCalorActivo) {
-                map.removeLayer(capasIncidentes);
-                map.removeLayer(capaClara);
-                capaOscura.addTo(map);
-                if (capaDeCalor) capaDeCalor.addTo(map);
-                btn.textContent = "📍 Ver Puntos";
-                btn.style.backgroundColor = "#28a745";
-                btn.style.color = "white";
-            } else {
-                if (capaDeCalor) map.removeLayer(capaDeCalor);
-                map.removeLayer(capaOscura);
-                capaClara.addTo(map);
-                capasIncidentes.addTo(map);
-
-                capasIncidentes.eachLayer(function(marcador) {
-                    // Verificamos que el elemento HTML ya exista en el DOM del mapa
-                    let el = marcador.getElement();
-                    if (el) {
-                        if (marcador.claseAsociada) {
-                            el.classList.add(marcador.claseAsociada);
-                        }
-                    }
-                });
-
-                btn.textContent = "Mapa de calor";
-                btn.style.backgroundColor = "white";
-                btn.style.color = "black";
-            }
-        };
-        return btn;
-    },
+//Al seleccionar mapa de calor se muestra mapa oscuro
+mapa.on("overlayadd", function(evento){
+    if(evento.layer === mapaCalor){
+        mapa.removeLayer(mapaClaro);
+        mapaOscuro.addTo(mapa);
+    }
 });
-mapa.addControl(new mapaDeCalorControles());
+
+//Al quitar mapa de calor se muestra mapa claro
+mapa.on("overlayremove", function(evento){
+    if(evento.layer === mapaCalor){
+        mapa.removeLayer(mapaOscuro);
+        mapaClaro.addTo(mapa);
+    }
+});
 
 async function buscarDatos() {
+
     const fechaInicio = document.getElementById("fecha_inicio").value;
     const fechaFin = document.getElementById("fecha_fin").value;
     const gravedad = document.getElementById("gravedad").value;
     const tipo = document.getElementById("tipo").value;
-    const estado = document.getElementById("estado").value;
+
+    //Validacion de las fechas (detiene el recorrido si estan mal)
+    if(fechaInicio !== "" && fechaFin !== "" && fechaInicio > fechaFin){
+        msjFiltro.textContent = "IMPORTANTE: ¡La fecha Hasta debe ser posterior o igual a la fecha Desde!";
+        return;
+    }
 
     const parametros = new URLSearchParams();
     parametros.set("fecha_inicio", fechaInicio);
     parametros.set("fecha_fin", fechaFin);
     parametros.set("gravedad", gravedad);
     parametros.set("tipo", tipo);
-    parametros.set("estado", estado);
 
     const url = formFiltros.action + "?" + parametros.toString();
 
@@ -121,32 +92,16 @@ async function buscarDatos() {
     //json a datos js
     const incidentes = await respuesta.json();
 
-    //borramos marcadores anteriores
+    //borramos marcadores, inicializamos listado incidentes y puntos de calor
     capasIncidentes.clearLayers();
     listadoIncidentes.textContent = "";
-    let datosCalor = [];
+    const puntosCalor = [];
 
     //marcador por cada incidente recibido
-    incidentes.forEach(function (incidente) {
-        let gravedadHeatmap = (incidente.gravedad || "").toLowerCase().trim();
-        let intensidad = 0.5; // Valor por defecto por si viene vació
+    incidentes.forEach (function(incidente){
 
-        switch (gravedadHeatmap) {
-            case "leve":
-                intensidad = 0.5;
-                break;
-            case "daño material":
-                intensidad = 0.25;
-                break;
-            case "grave":
-                intensidad = 0.80;
-                break;
-            case "fatal":
-                intensidad = 1.0;
-                break;
-        }
-        // lo pusheamos a la variable datos calor que va a contener como arreglo asociativo, para mostrarlos en el mapa
-        datosCalor.push([incidente.latitud, incidente.longitud, intensidad]);
+        //Se agrega punto de calor por incidente
+        puntosCalor.push([incidente.latitud, incidente.longitud, 1]);
 
         //tarjetas
         const tarjeta = document.createElement("article");
@@ -164,17 +119,42 @@ async function buscarDatos() {
         const estado = document.createElement("p");
         estado.textContent = "Estado: " + incidente.estado;
 
+
         //Agregamos al DOM (al final) y asociamos evento
         tarjeta.appendChild(titulo);
         tarjeta.appendChild(fecha);
         tarjeta.appendChild(gravedad);
         tarjeta.appendChild(estado);
+
+        //Enlace ver detalles en tarjetas
+        const enlaceDetalle = document.createElement("a");
+        enlaceDetalle.textContent = "Ver detalle";
+        enlaceDetalle.className = "enlace-detalle";
+        enlaceDetalle.href = "/incidentes/" + incidente.id;
+        enlaceDetalle.addEventListener("click", function(evento){
+            evento.stopPropagation(); //no se activa tambien la tarjeta
+        });
+        tarjeta.appendChild(enlaceDetalle);
+
+        //Enlace editar en tarjetas
+        const enlaceEditar = document.createElement("a");
+        enlaceEditar.textContent = "Modificar";
+        enlaceEditar.className = "enlace-editar";
+        enlaceEditar.href = "/incidentes/" + incidente.id + "/edit";
+        enlaceEditar.addEventListener("click", function(evento){
+            evento.stopPropagation();
+        })
+        tarjeta.appendChild(enlaceEditar);
+        
+
         //asociamos tarjeta a evento
-        tarjeta.addEventListener("click", function () {
+        tarjeta.addEventListener("click", function(){
+            capasIncidentes.addTo(mapa);
             mapa.setView(marcador.getLatLng(), 16);
             marcador.openPopup();
         });
         listadoIncidentes.appendChild(tarjeta);
+
 
         //PopUp del incidente en el marcador
         const detalle = document.createElement("div");
@@ -195,13 +175,7 @@ async function buscarDatos() {
 
         const datosPopUp = document.createElement("p");
         datosPopUp.className = "datos-popUp";
-        datosPopUp.textContent =
-            "Fecha: " +
-            incidente.fecha +
-            "\nGravedad: " +
-            incidente.gravedad +
-            "\nEstado: " +
-            incidente.estado;
+        datosPopUp.textContent = "Fecha: " + incidente.fecha + "\nGravedad: " + incidente.gravedad + "\nEstado: " + incidente.estado;
 
         detalle.appendChild(tituloPopUp);
         detalle.appendChild(datosPopUp);
@@ -212,61 +186,40 @@ async function buscarDatos() {
 
         //apariencia del marcador segun gravedad
         let claseIcono = "icono-material";
-
-        if (incidente.gravedad === "Leve") {
+        
+        if(incidente.gravedad === "Leve"){
             claseIcono = "icono-leve";
-        } else if (incidente.gravedad === "Grave") {
+        } else if (incidente.gravedad === "Grave"){
             claseIcono = "icono-grave";
-        } else if (incidente.gravedad === "Fatal") {
+        } else if(incidente.gravedad === "Fatal"){
             claseIcono = "icono-fatal";
         }
 
-        const marcador = L.marker([
-            incidente.latitud,
-            incidente.longitud,
-        ]).addTo(capasIncidentes);
-
-        marcador.claseAsociada = claseIcono;
-        marcador.getElement().classList.add(claseIcono);
+        //Asignamos la clase al marcador original de Leaflet
+        const icono = new L.Icon.Default({className: claseIcono});
+        
+        const marcador = L.marker([incidente.latitud, incidente.longitud], {icon: icono}).addTo(capasIncidentes);
         marcador.bindPopup(detalle);
     });
 
-    if (incidentes.length === 0) {
+    //se agregan los puntos de calor al mapa de calor
+    mapaCalor.setLatLngs(puntosCalor);
+
+    if(incidentes.length === 0){
         listadoIncidentes.textContent = "No hay incidentes para mostrar.";
     }
+    msjFiltro.textContent = "Incidentes filtrados: " + incidentes.length;
 
-    // Creamos o actualizamos la capa de calor
-    if (capaDeCalor) {
-        mapa.removeLayer(capaDeCalor);
-    }
-
-    console.log(datosCalor);
-
-    // atributos del mapa de calor
-    capaDeCalor = L.heatLayer(datosCalor, {
-        radius: 80,
-        blur: 50,
-        maxZoom: 20,
-        minOpacity: 0.3,
-    });
-
-    // Si el botón de mapa de calor está activo lo mostramos
-    if (iscapaDeCalorActivo) {
-        mapa.removeLayer(capasIncidentes);
-        capaClara.remove();
-        capaOscura.addTo(mapa);
-        capaDeCalor.addTo(mapa);
-    }
-
-    msjFiltro.textContent = "Incidentes encontrados: " + incidentes.length;
+    
 }
 
-formFiltros.addEventListener("submit", function (evento) {
+
+formFiltros.addEventListener("submit", function(evento){
     evento.preventDefault();
     buscarDatos();
-});
+    });
 
-formFiltros.addEventListener("reset", function (evento) {
+formFiltros.addEventListener("reset", function(evento){
     evento.preventDefault();
 
     document.getElementById("fecha_inicio").value = "";
@@ -275,6 +228,6 @@ formFiltros.addEventListener("reset", function (evento) {
     document.getElementById("tipo").value = "";
 
     buscarDatos();
-});
+})
 
 buscarDatos();

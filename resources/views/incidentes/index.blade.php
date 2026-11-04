@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Incident Tracker</title>
+        <title>Inicio - Contro de Incidentes</title>
 
         <link rel="stylesheet" href="{{ asset('css/incidentes.css') }}">
 
@@ -15,10 +15,7 @@
 
         <!-- JavaScripts de Leaflet -->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-
-        <!-- <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js" defer></script> -->
-        <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js" defer></script>
-
+        <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js" defer></script>  <!-- heat map -->
         <script src="{{ asset('js/mapa-index.js') }}" defer></script>
 
     </head>
@@ -26,13 +23,15 @@
     <body>
         <header class="header">
             <h1>Panel de control de incidentes</h1>
-            <h5>Sistema de visualización y análisis de incidentes viales</h5>
+            <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
         </header>
 
         @if (session('mensaje'))
-            <p>{{ session('mensaje') }}</p>
+            <div class="aviso">
+                <p class="aviso-exito" role="status">{{ session('mensaje') }}</p>
+            </div> 
         @endif
-        
+
         <main class="contenedor">
 
             <!-- Panel izquiedo -->
@@ -69,14 +68,6 @@
                         <option value="Incidente operativo">Incidente operativo</option>
                     </select>
 
-                    <label for="estado">Estado: </label>
-                        <select name="estado" id="estado">
-                            <option value="">Todos</option>
-                            <option value="pendiente">Pendiente</option>
-                            <option value="en proceso">En proceso</option>
-                            <option value="resuelto">Resuelto</option>
-                        </select>
-
                     <button type="submit" class=" btn btn-filtrar">Filtrar</button>
                     <button type="reset" class="btn btn-reset">Restablecer</button>
                 </form>
@@ -93,10 +84,54 @@
                 <a href="{{ route('incidentes.create') }}" class="btn btn-agregar">+ Agregar incidente</a>
             </section>
 
-            <section class="panel-mapa">
-                <h3 id="titulo-mapa">Mapa de Incidentes</h3>
-                <div id="mapa"></div> 
-            </section>
+            <!-- Mapa Leaflet y Metricas -->
+            <div class="mapa-metricas-columna">
+
+                <section class="panel-mapa">
+                    <h3 id="titulo-mapa">Mapa de Incidentes</h3>
+                    <div id="mapa"></div> 
+                    <p>
+                        <strong>Mapa de calor: </strong>
+                        <span class="explicacion-calor"> Tonos azules indican menor concentracion y tonos rojos una mayor concentracion de incidentes registrados. </span>
+                    </p>
+                </section>
+
+                <!-- Metricas Generales -->
+                <section class="metricas-generales">
+                    <h3>Metricas Generales</h3>
+
+                    <div class="lista-metricas">
+
+                        <article class="metrica">
+                            <span>Total</span>
+                            <strong>{{ $total }}</strong>
+                        </article>
+
+                        <article class="metrica">
+                            <span>Leves</span>
+                            <strong>{{ $leves }}</strong>
+                        </article>
+
+                        <article class="metrica">
+                            <span>Graves</span>
+                            <strong>{{ $graves }}</strong>
+                        </article>
+
+                        <article class="metrica">
+                            <span>Fatales</span>
+                            <strong>{{ $fatales }}</strong>
+                        </article>
+
+                        <article class="metrica">
+                            <span>Daño Material</span>
+                            <strong>{{ $danioMaterial }}</strong>
+                        </article>
+
+                    </div>
+
+                </section>
+
+            </div>
 
         </main>
 

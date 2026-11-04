@@ -23,8 +23,8 @@ return new class extends Migration
             $table->decimal("longitud", 11, 8);     // Rango: -180.00000000 a 180.00000000
 
             $table->text("descripcion");
-            $table->string("causa_raiz")->nullable()->change();
-            $table->text("accion_correlativa")->nullable()->change();
+            $table->string("causa_raiz");
+            $table->text("accion_correlativa");
             $table->string('estado')->default('pendiente')->after('accion_correlativa');    // valor por defecto pendiente
 
             $table->timestamps(); //fecha de subida y modificacion
@@ -39,41 +39,3 @@ return new class extends Migration
         Schema::dropIfExists('incidentes');
     }
 };
-
-
-// return new class extends Migration
-// {
-//     /**
-//      * Run the migrations.
-//      */
-//     public function up(): void
-//     {
-//         // Usamos Schema::table porque la tabla ya existe
-//         Schema::table('incidentes', function (Blueprint $table) {
-//             // Modificamos los campos existentes para que sean nullable
-//             $table->string("causa_raiz")->nullable()->change();
-//             $table->text("accion_correlativa")->nullable()->change();
-
-//             // Agregamos el nuevo campo si todavía no lo tenías
-//             if (!Schema::hasColumn('incidentes', 'estado')) {
-//                 $table->string('estado')->default('pendiente')->after('accion_correlativa');
-//             }
-//         });
-//     }
-
-//     /**
-//      * Reverse the migrations.
-//      */
-//     public function down(): void
-//     {
-//         Schema::table('incidentes', function (Blueprint $table) {
-//             // Revertir los cambios si fuera necesario
-//             $table->string("causa_raiz")->nullable(false)->change();
-//             $table->text("accion_correlativa")->nullable(false)->change();
-            
-//             if (Schema::hasColumn('incidentes', 'estado')) {
-//                 $table->dropColumn('estado');
-//             }
-//         });
-//     }
-// };

@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/incidentes.css') }}">
 
-    <title>Registrar incidente - Incident Tracker</title>
+    <title>Registrar incidente</title>
 
     <!-- CSS de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -27,17 +27,8 @@
         <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
     </header>
 
-    <a href="{{route('incidentes.index')}}"><- Volver atras</a>
 
             <main class="registro-contenedor">
-                @if ($errors->any())
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-
                 <section class="formulario-contenedor">
                     <h2>Registro de incidentes</h2>
 
@@ -68,19 +59,16 @@
                         <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej: Ruta 17, Añelo" required>
 
                         <label for="descripcion">Descripcion: </label>
-                        <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+                        <textarea id="descripcion" name="descripcion" rows="4" placeholder="Detalle el accidente" required></textarea>
 
                         <label for="causa_raiz">Causa raiz: </label>
-                        <select id="causa_raiz" name="causa">
+                        <select id="causa_raiz" name="causa_raiz" required>
                             <option value="">Seleccione causa</option>
                             <option value="Factor humano">Factor humano</option>
                             <option value="Falla mecanica">Falla mecanica</option>
                             <option value="Condiciones climaticas">Condiciones climaticas</option>
                             <option value="Otro">Otro</option>
                         </select>
-
-                        <label for="accion_correlativa">Accionar correlativo: </label>
-                        <textarea id="accion_correlativa" name="accion_correlativa" rows="4"></textarea>
 
                         <label for="estado">Estado: </label>
                         <select name="estado" id="estado" required>
@@ -89,18 +77,20 @@
                             <option value="resuelto">Resuelto</option>
                         </select>
 
+                        <label for="accion_correlativa">Accionar correlativo: </label>
+                        <textarea id="accion_correlativa" name="accion_correlativa" rows="4" placeholder="Detalle el accionar a realizar segun el estado del accidente"  required></textarea>
+
                         <!-- latitud y longitud - Leaflet -->
-                        <div>
-                            <h3>Seleccionar en el mapa</h3>
-                            <div>
-                                <label for="latitud">Latitud:</label>
-                                <input type="number" id="latitud" name="latitud" required readonly>
-                            </div>
-                            <div>
-                                <label for="longitud">Longitud:</label>
-                                <input type="number" id="longitud" name="longitud" required readonly>
-                            </div>
-                        </div>
+                        
+                        <h3>Coordenadas</h3>
+                        <label for="latitud">Latitud:</label>
+                        <input type="number" id="latitud" name="latitud" required readonly>
+                            
+                            
+                        <label for="longitud">Longitud:</label>
+                        <input type="number" id="longitud" name="longitud" required readonly>
+                            
+                        
 
                         <button type="submit" class="btn btn-agregar">Guardar Incidente</button>
 
@@ -115,9 +105,9 @@
                     <div id="mapa-seleccion">
                     </div>
 
-                    <p id="coordenadas-seleccionadas">
+                    <span id="seleccione-coordenadas">
                         Selecciona en el mapa para ver las coordenadas
-                    </p>
+                    </span>
 
                 </section>
             </main>
