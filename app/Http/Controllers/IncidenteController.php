@@ -59,6 +59,7 @@ class IncidenteController extends Controller
             "fecha_fin" => ["nullable", "date_format:Y-m-d", Rule::when($request->filled("fecha_inicio"), "after_or_equal:fecha_inicio")],
             "gravedad" => ["nullable", "in:Leve,Grave,Fatal,Danio Material"],
             "tipo" => ["nullable", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
+            "estado" => ["nullable", "in:pendiente,en proceso,resuelto"],
         ]);
 
         //inicio consulta
@@ -78,6 +79,10 @@ class IncidenteController extends Controller
 
         if (!empty($datosFiltros["tipo"])) {
             $consulta->where("tipo", $datosFiltros["tipo"]);
+        }
+
+        if (!empty($datosFiltros["estado"])) {
+            $consulta->where("estado", $datosFiltros["estado"]);
         }
 
         $incidentes = $consulta->orderBy("fecha", "desc")->orderBy("id", "desc")->get();

@@ -16,7 +16,8 @@
         <!-- JavaScripts de Leaflet -->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
 
-        <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js" defer></script>
+        <!-- <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js" defer></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js" defer></script>
 
         <script src="{{ asset('js/mapa-index.js') }}" defer></script>
 
@@ -68,6 +69,14 @@
                         <option value="Incidente operativo">Incidente operativo</option>
                     </select>
 
+                    <label for="estado">Estado: </label>
+                        <select name="estado" id="estado">
+                            <option value="">Todos</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en proceso">En proceso</option>
+                            <option value="resuelto">Resuelto</option>
+                        </select>
+
                     <button type="submit" class=" btn btn-filtrar">Filtrar</button>
                     <button type="reset" class="btn btn-reset">Restablecer</button>
                 </form>
@@ -84,10 +93,9 @@
                 <a href="{{ route('incidentes.create') }}" class="btn btn-agregar">+ Agregar incidente</a>
             </section>
 
-            <!-- Mapa Leaflet HTML -->
             <section class="panel-mapa">
                 <h3 id="titulo-mapa">Mapa de Incidentes</h3>
-                <div id="mapa"></div> <!-- Asegúrate de darle altura al div del mapa -->
+                <div id="mapa"></div> 
             </section>
 
         </main>

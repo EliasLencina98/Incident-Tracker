@@ -23,7 +23,7 @@
 
 <body>
     <header class="header">
-        <h1>Incident Tracker</h1>
+        <h1>Panel de control de incidentes</h1>
         <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
     </header>
 

@@ -102,12 +102,14 @@ async function buscarDatos() {
     const fechaFin = document.getElementById("fecha_fin").value;
     const gravedad = document.getElementById("gravedad").value;
     const tipo = document.getElementById("tipo").value;
+    const estado = document.getElementById("estado").value;
 
     const parametros = new URLSearchParams();
     parametros.set("fecha_inicio", fechaInicio);
     parametros.set("fecha_fin", fechaFin);
     parametros.set("gravedad", gravedad);
     parametros.set("tipo", tipo);
+    parametros.set("estado", estado);
 
     const url = formFiltros.action + "?" + parametros.toString();
 
