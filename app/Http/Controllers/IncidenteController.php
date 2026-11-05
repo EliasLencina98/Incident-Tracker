@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Incidente;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -9,27 +10,24 @@ use Illuminate\Http\RedirectResponse;
 
 class IncidenteController extends Controller
 {
-    
-    public function index (): View 
-    {
-        $total = Incidente::count();
-        $leves = Incidente::where("gravedad", "Leve")->count();
-        $graves = Incidente::where("gravedad", "Grave")->count();
-        $fatales = Incidente::where("gravedad", "Fatal")->count();
-        $danioMaterial = Incidente::where("gravedad", "Danio Material")->count();
 
-        return view ("incidentes.index", compact("total", "leves", "graves", "fatales", "danioMaterial"));
+    public function index(): View
+    {
+
+        $incidentes = Incidente::orderBy("fecha", "desc")->orderBy("id", "desc")->get();
+
+        return view("incidentes.index", compact("incidentes"));
     }
 
-    public function create (): View
+    public function create(): View
     {
         return view("incidentes.create");
     }
 
-    public function show (Int $id): View
+    public function show(Int $id): View
     {
         $incidente = Incidente::findOrFail($id);
-        
+
         return view("incidentes.show", compact("incidente"));
     }
 
@@ -41,8 +39,8 @@ class IncidenteController extends Controller
             "gravedad" => ["required", "in:Leve,Grave,Fatal,Danio Material"],
             "ubicacion" => ["string", "required"],
             "descripcion" => ["string", "required"],
-            "causa_raiz" => ["required", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
-            "accion_correlativa" => ["string", "required"],
+            "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
+            "accion_correlativa" => ["nullable","string"],
             "estado" => ["required", "in:pendiente,en proceso,resuelto"],
             "latitud" => ["numeric", "required"],
             "longitud" => ["numeric", "required"]
@@ -62,7 +60,7 @@ class IncidenteController extends Controller
         ]);
 
         return redirect()->route("incidentes.index")
-                ->with("mensaje", "¡Incidente cargado correctamente!");
+            ->with("mensaje", "¡Incidente cargado correctamente!");
     }
 
     public function edit(Int $id): View
@@ -71,7 +69,7 @@ class IncidenteController extends Controller
         return view("incidentes.edit", compact("incidente"));
     }
 
-    public function update (Request $request, int $id): RedirectResponse
+    public function update(Request $request, int $id): RedirectResponse
     {
         $incidente = Incidente::findOrFail($id);
 
@@ -81,8 +79,8 @@ class IncidenteController extends Controller
             "gravedad" => ["required", "in:Leve,Grave,Fatal,Danio Material"],
             "ubicacion" => ["string", "required"],
             "descripcion" => ["string", "required"],
-            "causa_raiz" => ["required", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
-            "accion_correlativa" => ["string", "required"],
+            "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
+            "accion_correlativa" => ["nullable","string"],
             "estado" => ["required", "in:pendiente,en proceso,resuelto"],
         ]);
 
@@ -98,16 +96,17 @@ class IncidenteController extends Controller
             "fecha_fin" => ["nullable", "date_format:Y-m-d", Rule::when($request->filled("fecha_inicio"), "after_or_equal:fecha_inicio")],
             "gravedad" => ["nullable", "in:Leve,Grave,Fatal,Danio Material"],
             "tipo" => ["nullable", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
+            "estado" => ["nullable", "in:pendiente,en proceso,resuelto"],
         ]);
 
         //inicio consulta
         $consulta = Incidente::query();
 
-        if(!empty($datosFiltros["fecha_inicio"])) {
+        if (!empty($datosFiltros["fecha_inicio"])) {
             $consulta->where("fecha", ">=", $datosFiltros["fecha_inicio"]);
         }
 
-        if(!empty($datosFiltros["fecha_fin"])) {
+        if (!empty($datosFiltros["fecha_fin"])) {
             $consulta->where("fecha", "<=", $datosFiltros["fecha_fin"]);
         }
 
@@ -119,10 +118,29 @@ class IncidenteController extends Controller
             $consulta->where("tipo", $datosFiltros["tipo"]);
         }
 
-        $incidentes = $consulta->orderBy("fecha", "desc")->orderBy("id", "desc")->get();
+        if (!empty($datosFiltros["estado"])) {
+            $consulta->where("estado", $datosFiltros["estado"]);
+        }
+
+        // se usa la sintaxis clone para crear una copia del objeto de $consulta
+        $incidentes = (clone $consulta)->orderBy("fecha", "desc")->orderBy("id", "desc")->get();
+
+        $total = (clone $consulta)->count();
+        $leves = (clone $consulta)->where("gravedad", "Leve")->count();
+        $graves = (clone $consulta)->where("gravedad", "Grave")->count();
+        $fatales = (clone $consulta)->where("gravedad", "Fatal")->count();
+        $danioMaterial = (clone $consulta)->where("gravedad", "Danio Material")->count();
 
         //respondo con .json
-        return response()->json($incidentes);
+        return response()->json([
+            'incidentes' => $incidentes,
+            'metricas' => [
+                'total' => $total,
+                'leves' => $leves,
+                'graves' => $graves,
+                'fatales' => $fatales,
+                'danioMaterial' => $danioMaterial,
+            ]
+        ]);
     }
-
 }

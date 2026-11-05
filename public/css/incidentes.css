@@ -55,6 +55,7 @@ body {
 }
 
 #titulo-filtros-principal {
+    margin-top: 20px;
     text-align: center;
 }
 
@@ -151,7 +152,8 @@ body {
     cursor: pointer;
     font-weight: bold;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 15px;
+
 }
 
 .btn-filtrar {

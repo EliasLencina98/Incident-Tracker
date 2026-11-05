@@ -23,7 +23,7 @@
     <body>
         <header class="header">
             <h1>Panel de control de incidentes</h1>
-            <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
+            <h5>Sistema de visualización y análisis de incidentes viales</h5>
         </header>
 
         @if (session('mensaje'))
@@ -36,6 +36,8 @@
 
             <!-- Panel izquiedo -->
             <section class="panel-izquierdo">
+
+                <a href="{{ route('incidentes.create') }}" class="btn btn-agregar">+ Agregar incidente</a>
 
                 <!-- Seccion de filtros y agregar incidente -->
 
@@ -89,13 +91,12 @@
                     <div id="listado-incidentes"></div>
                 </section>
 
-                <a href="{{ route('incidentes.create') }}" class="btn btn-agregar">+ Agregar incidente</a>
             </section>
 
             <!-- Mapa Leaflet y Metricas -->
             <div class="mapa-metricas-columna">
 
-                <section class="panel-mapa">
+                <section class="panel-mapa" id="panel-mapa">
                     <h3 id="titulo-mapa">Mapa de Incidentes</h3>
                     <div id="mapa"></div> 
                     <p>
@@ -112,27 +113,27 @@
 
                         <article class="metrica">
                             <span>Total</span>
-                            <strong>{{ $total }}</strong>
+                            <strong id="metrica-total"></strong>
                         </article>
 
                         <article class="metrica">
                             <span>Leves</span>
-                            <strong>{{ $leves }}</strong>
+                            <strong id="metrica-leves"></strong>
                         </article>
 
                         <article class="metrica">
                             <span>Graves</span>
-                            <strong>{{ $graves }}</strong>
+                            <strong id="metrica-graves"></strong>
                         </article>
 
                         <article class="metrica">
                             <span>Fatales</span>
-                            <strong>{{ $fatales }}</strong>
+                            <strong id="metrica-fatales"></strong>
                         </article>
 
                         <article class="metrica">
                             <span>Daño Material</span>
-                            <strong>{{ $danioMaterial }}</strong>
+                            <strong id="metrica-danio-material"></strong>
                         </article>
 
                     </div>
