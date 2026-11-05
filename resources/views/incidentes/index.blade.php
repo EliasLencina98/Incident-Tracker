@@ -68,6 +68,14 @@
                         <option value="Incidente operativo">Incidente operativo</option>
                     </select>
 
+                    <label for="estado">Estado: </label>
+                    <select id="estado" name="estado">
+                        <option value="">Todas</option>
+                        <option value="pendiente">pendiente</option>
+                        <option value="en proceso">en proceso</option>
+                        <option value="resuelto">resuelto</option>
+                    </select>
+
                     <button type="submit" class=" btn btn-filtrar">Filtrar</button>
                     <button type="reset" class="btn btn-reset">Restablecer</button>
                 </form>

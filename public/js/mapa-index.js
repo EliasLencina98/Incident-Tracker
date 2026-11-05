@@ -42,7 +42,7 @@ const listadoIncidentes = document.getElementById("listado-incidentes");
 
 //Creo grupo de capas y mapa de calor
 const capasIncidentes = L.layerGroup().addTo(mapa);
-const mapaCalor = L.heatLayer([], {radius: 50, blur: 20, maxZoom: 12, minOpacity: 0.3});
+const mapaCalor = L.heatLayer([], {radius: 80, blur: 50, maxZoom: 20, minOpacity: 0.3});
 
 //Panel de contro para mostrar u ocultar capas (marcadores y mapa de calor)
 L.control.layers({"Claro": mapaClaro, "Oscuro": mapaOscuro}, {"Marcadores": capasIncidentes, "Mapa de calor": mapaCalor}).addTo(mapa);
@@ -69,6 +69,7 @@ async function buscarDatos() {
     const fechaFin = document.getElementById("fecha_fin").value;
     const gravedad = document.getElementById("gravedad").value;
     const tipo = document.getElementById("tipo").value;
+    const estado = document.getElementById("estado").value;
 
     //Validacion de las fechas (detiene el recorrido si estan mal)
     if(fechaInicio !== "" && fechaFin !== "" && fechaInicio > fechaFin){
@@ -81,6 +82,7 @@ async function buscarDatos() {
     parametros.set("fecha_fin", fechaFin);
     parametros.set("gravedad", gravedad);
     parametros.set("tipo", tipo);
+    parametros.set("estado", estado);
 
     const url = formFiltros.action + "?" + parametros.toString();
 
@@ -100,8 +102,26 @@ async function buscarDatos() {
     //marcador por cada incidente recibido
     incidentes.forEach (function(incidente){
 
+        let gravedadHeatmap = (incidente.gravedad || "").toLowerCase().trim();
+        let intensidad = 0.5; // Valor por defecto por si viene vació
+
+        switch (gravedadHeatmap) {
+            case "leve":
+                intensidad = 0.5;
+                break;
+            case "daño material":
+                intensidad = 0.25;
+                break;
+            case "grave":
+                intensidad = 0.80;
+                break;
+            case "fatal":
+                intensidad = 1.0;
+                break;
+        }
+
         //Se agrega punto de calor por incidente
-        puntosCalor.push([incidente.latitud, incidente.longitud, 1]);
+        puntosCalor.push([incidente.latitud, incidente.longitud, intensidad]);
 
         //tarjetas
         const tarjeta = document.createElement("article");
