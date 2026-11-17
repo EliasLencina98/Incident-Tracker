@@ -15,7 +15,7 @@ return new class extends Migration
         // valor por defecto 'pendiente'
         $table->string('estado')->default('pendiente')->after('accion_correlativa');
         $table->time('hora')->nullable()->after('fecha');
-        $table->boolean('fatalidad')->default(false)->after('hora');
+        $table->integer('fatalidad')->default(0)->after('hora');
         $table->integer('heridos')->default(0)->after('fatalidad');
         $table->string('estado_calzada')->nullable()->after('longitud');
         $table->string('clima')->nullable()->after('impacto_economico');

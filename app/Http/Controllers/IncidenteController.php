@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incidente;
+use App\Models\Vehiculo;
+use App\Models\Chofer;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Validation\Rule;
@@ -14,60 +16,157 @@ class IncidenteController extends Controller
     public function index(): View
     {
 
-        $incidentes = Incidente::orderBy("fecha", "desc")->orderBy("id", "desc")->get();
+        // $incidentes = Incidente::orderBy("fecha", "desc")->orderBy("id", "desc")->get();
+        $incidentes = Incidente::with(['vehiculo', 'chofer'])->orderBy("fecha", "desc")->orderBy("id", "desc")->get();
 
         return view("incidentes.index", compact("incidentes"));
     }
 
+    // public function create(): View
+    // {
+    //     return view("incidentes.create");
+    // }
+
     public function create(): View
     {
-        return view("incidentes.create");
+        // Necesitamos mandar los vehículos y choferes a la vista para poblar los <select>
+        $vehiculos = Vehiculo::all();
+        $choferes = Chofer::all();
+
+        return view("incidentes.create", compact("vehiculos", "choferes"));
     }
+
+    // public function show(Int $id): View
+    // {
+    //     $incidente = Incidente::findOrFail($id);
+
+    //     return view("incidentes.show", compact("incidente"));
+    // }
 
     public function show(Int $id): View
     {
-        $incidente = Incidente::findOrFail($id);
+        $incidente = Incidente::with(['vehiculo', 'chofer'])->findOrFail($id);
 
         return view("incidentes.show", compact("incidente"));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             "fecha" => ["date", "required", "date_format:Y-m-d"],
-            "tipo" => ["required", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
-            "gravedad" => ["required", "in:Leve,Grave,Fatal,Danio Material"],
+            "hora" => ["nullable", "date_format:H:i"],
+            "tipo" => ["required", "in:colision/choque vehicular,impacto objeto fijo,vuelco,despiste,atropello,falla mecanica,principio de incendio/incendio,daño menor,casi incidente"],
+            "fatalidad" => ["required", "integer"],
+            "heridos" => ["required", "integer", "min:0"],
             "ubicacion" => ["string", "required"],
+            "latitud" => ["numeric", "required"],
+            "longitud" => ["numeric", "required"],
+            "estado_calzada" => ["nullable", "string"],
+            "clima" => ["nullable", "string"],
             "descripcion" => ["string", "required"],
             "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
-            "accion_correlativa" => ["nullable","string"],
+            "accion_correlativa" => ["nullable", "string"],
             "estado" => ["required", "in:pendiente,en proceso,resuelto"],
-            "latitud" => ["numeric", "required"],
-            "longitud" => ["numeric", "required"]
+            "vehiculo_id" => ["required", "exists:vehiculos,id"],
+            "chofer_id" => ["required", "exists:choferes,id"],
         ]);
+
+        // calculamos automaticamente la gravedad usando la matriz de gravedad
+        $gravedadCalculada = Incidente::calcularGravedad(
+            $validated["tipo"],
+            $validated["heridos"],
+            $validated["fatalidad"]
+        );
 
         Incidente::create([
             "fecha" => $validated["fecha"],
+            "hora" => $validated["hora"] ?? null,
             "tipo" => $validated["tipo"],
-            "gravedad" => $validated["gravedad"],
+            "fatalidad" => $validated["fatalidad"],
+            "heridos" => $validated["heridos"],
+            "gravedad" => $gravedadCalculada, // 
             "ubicacion" => $validated["ubicacion"],
             "latitud" => $validated["latitud"],
             "longitud" => $validated["longitud"],
+            "estado_calzada" => $validated["estado_calzada"] ?? null,
+            "clima" => $validated["clima"] ?? null,
             "descripcion" => $validated["descripcion"],
-            "causa_raiz" => $validated["causa_raiz"],
-            "accion_correlativa" => $validated["accion_correlativa"],
-            "estado" => $validated["estado"]
+            "causa_raiz" => $validated["causa_raiz"] ?? null,
+            "accion_correlativa" => $validated["accion_correlativa"] ?? null,
+            "estado" => $validated["estado"],
+            "vehiculo_id" => $validated["vehiculo_id"],
+            "chofer_id" => $validated["chofer_id"],
         ]);
 
         return redirect()->route("incidentes.index")
             ->with("mensaje", "¡Incidente cargado correctamente!");
     }
 
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         "fecha" => ["date", "required", "date_format:Y-m-d"],
+    //         "tipo" => ["required", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
+    //         "gravedad" => ["required", "in:Leve,Grave,Fatal,Danio Material"],
+    //         "ubicacion" => ["string", "required"],
+    //         "descripcion" => ["string", "required"],
+    //         "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
+    //         "accion_correlativa" => ["nullable","string"],
+    //         "estado" => ["required", "in:pendiente,en proceso,resuelto"],
+    //         "latitud" => ["numeric", "required"],
+    //         "longitud" => ["numeric", "required"]
+    //     ]);
+
+    //     Incidente::create([
+    //         "fecha" => $validated["fecha"],
+    //         "tipo" => $validated["tipo"],
+    //         "gravedad" => $validated["gravedad"],
+    //         "ubicacion" => $validated["ubicacion"],
+    //         "latitud" => $validated["latitud"],
+    //         "longitud" => $validated["longitud"],
+    //         "descripcion" => $validated["descripcion"],
+    //         "causa_raiz" => $validated["causa_raiz"],
+    //         "accion_correlativa" => $validated["accion_correlativa"],
+    //         "estado" => $validated["estado"]
+    //     ]);
+
+    //     return redirect()->route("incidentes.index")
+    //         ->with("mensaje", "¡Incidente cargado correctamente!");
+    // }
+
+    // public function edit(Int $id): View
+    // {
+    //     $incidente = Incidente::findOrFail($id);
+    //     return view("incidentes.edit", compact("incidente"));
+    // }
+
     public function edit(Int $id): View
     {
         $incidente = Incidente::findOrFail($id);
-        return view("incidentes.edit", compact("incidente"));
+        $vehiculos = Vehiculo::all();
+        $choferes = Chofer::all();
+
+        return view("incidentes.edit", compact("incidente", "vehiculos", "choferes"));
     }
+
+    // public function update(Request $request, int $id): RedirectResponse
+    // {
+    //     $incidente = Incidente::findOrFail($id);
+
+    //     $datosValidados = $request->validate([
+    //         "fecha" => ["date", "required", "date_format:Y-m-d"],
+    //         "tipo" => ["required", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
+    //         "gravedad" => ["required", "in:Leve,Grave,Fatal,Danio Material"],
+    //         "ubicacion" => ["string", "required"],
+    //         "descripcion" => ["string", "required"],
+    //         "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
+    //         "accion_correlativa" => ["nullable","string"],
+    //         "estado" => ["required", "in:pendiente,en proceso,resuelto"],
+    //     ]);
+
+    //     $incidente->update($datosValidados);
+    //     return redirect()->route("incidentes.index")->with("mensaje", "¡Incidente modificado correctamente!");
+    // }
 
     public function update(Request $request, int $id): RedirectResponse
     {
@@ -75,32 +174,103 @@ class IncidenteController extends Controller
 
         $datosValidados = $request->validate([
             "fecha" => ["date", "required", "date_format:Y-m-d"],
-            "tipo" => ["required", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
-            "gravedad" => ["required", "in:Leve,Grave,Fatal,Danio Material"],
+            "hora" => ["nullable", "date_format:H:i"],
+            "tipo" => ["required", "in:colision/choque vehicular,impacto objeto fijo,vuelco,despiste,atropello,falla mecanica,principio de incendio/incendio,daño menor,casi incidente"],
+            "fatalidad" => ["required", "integer"],
+            "heridos" => ["required", "integer", "min:0"],
             "ubicacion" => ["string", "required"],
+            "latitud" => ["numeric", "required"],
+            "longitud" => ["numeric", "required"],
+            "estado_calzada" => ["nullable", "string"],
+            "clima" => ["nullable", "string"],
             "descripcion" => ["string", "required"],
             "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
-            "accion_correlativa" => ["nullable","string"],
+            "accion_correlativa" => ["nullable", "string"],
             "estado" => ["required", "in:pendiente,en proceso,resuelto"],
+            "vehiculo_id" => ["required", "exists:vehiculos,id"],
+            "chofer_id" => ["required", "exists:choferes,id"],
         ]);
 
+        // en caso que se modifique la tipo, heridos o fatalidad, volvemos a recalcular
+        $datosValidados['gravedad'] = Incidente::calcularGravedad(
+            $datosValidados["tipo"],
+            $datosValidados["heridos"],
+            $datosValidados["fatalidad"]
+        );
+
         $incidente->update($datosValidados);
+
         return redirect()->route("incidentes.index")->with("mensaje", "¡Incidente modificado correctamente!");
     }
 
+    // public function obtenerDatos(Request $request)
+    // {
+    //     //validacion
+    //     $datosFiltros = $request->validate([
+    //         "fecha_inicio" => ["nullable", "date_format:Y-m-d"],
+    //         "fecha_fin" => ["nullable", "date_format:Y-m-d", Rule::when($request->filled("fecha_inicio"), "after_or_equal:fecha_inicio")],
+    //         "gravedad" => ["nullable", "in:Leve,Grave,Fatal,Danio Material"],
+    //         "tipo" => ["nullable", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
+    //         "estado" => ["nullable", "in:pendiente,en proceso,resuelto"],
+    //     ]);
+
+    //     //inicio consulta
+    //     $consulta = Incidente::query();
+
+    //     if (!empty($datosFiltros["fecha_inicio"])) {
+    //         $consulta->where("fecha", ">=", $datosFiltros["fecha_inicio"]);
+    //     }
+
+    //     if (!empty($datosFiltros["fecha_fin"])) {
+    //         $consulta->where("fecha", "<=", $datosFiltros["fecha_fin"]);
+    //     }
+
+    //     if (!empty($datosFiltros["gravedad"])) {
+    //         $consulta->where("gravedad", $datosFiltros["gravedad"]);
+    //     }
+
+    //     if (!empty($datosFiltros["tipo"])) {
+    //         $consulta->where("tipo", $datosFiltros["tipo"]);
+    //     }
+
+    //     if (!empty($datosFiltros["estado"])) {
+    //         $consulta->where("estado", $datosFiltros["estado"]);
+    //     }
+
+    //     // se usa la sintaxis clone para crear una copia del objeto de $consulta
+    //     $incidentes = (clone $consulta)->orderBy("fecha", "desc")->orderBy("id", "desc")->get();
+
+    //     $total = (clone $consulta)->count();
+    //     $leves = (clone $consulta)->where("gravedad", "Leve")->count();
+    //     $graves = (clone $consulta)->where("gravedad", "Grave")->count();
+    //     $fatales = (clone $consulta)->where("gravedad", "Fatal")->count();
+    //     $danioMaterial = (clone $consulta)->where("gravedad", "Danio Material")->count();
+
+    //     //respondo con .json
+    //     return response()->json([
+    //         'incidentes' => $incidentes,
+    //         'metricas' => [
+    //             'total' => $total,
+    //             'leves' => $leves,
+    //             'graves' => $graves,
+    //             'fatales' => $fatales,
+    //             'danioMaterial' => $danioMaterial,
+    //         ]
+    //     ]);
+    // }
+
     public function obtenerDatos(Request $request)
     {
-        //validacion
+
         $datosFiltros = $request->validate([
             "fecha_inicio" => ["nullable", "date_format:Y-m-d"],
             "fecha_fin" => ["nullable", "date_format:Y-m-d", Rule::when($request->filled("fecha_inicio"), "after_or_equal:fecha_inicio")],
-            "gravedad" => ["nullable", "in:Leve,Grave,Fatal,Danio Material"],
-            "tipo" => ["nullable", "in:Accidente vehicular,Falla mecanica,Incidente operativo"],
+            "gravedad" => ["nullable", "in:leve,moderado,grave,fatal"],
+            "tipo" => ["nullable", "string"],
             "estado" => ["nullable", "in:pendiente,en proceso,resuelto"],
         ]);
 
-        //inicio consulta
-        $consulta = Incidente::query();
+        $consulta = Incidente::with(['vehiculo', 'chofer']);
 
         if (!empty($datosFiltros["fecha_inicio"])) {
             $consulta->where("fecha", ">=", $datosFiltros["fecha_inicio"]);
@@ -122,24 +292,22 @@ class IncidenteController extends Controller
             $consulta->where("estado", $datosFiltros["estado"]);
         }
 
-        // se usa la sintaxis clone para crear una copia del objeto de $consulta
         $incidentes = (clone $consulta)->orderBy("fecha", "desc")->orderBy("id", "desc")->get();
 
         $total = (clone $consulta)->count();
-        $leves = (clone $consulta)->where("gravedad", "Leve")->count();
-        $graves = (clone $consulta)->where("gravedad", "Grave")->count();
-        $fatales = (clone $consulta)->where("gravedad", "Fatal")->count();
-        $danioMaterial = (clone $consulta)->where("gravedad", "Danio Material")->count();
+        $leves = (clone $consulta)->where("gravedad", "leve")->count();
+        $moderados = (clone $consulta)->where("gravedad", "moderado")->count();
+        $graves = (clone $consulta)->where("gravedad", "grave")->count();
+        $fatales = (clone $consulta)->where("gravedad", "fatal")->count();
 
-        //respondo con .json
         return response()->json([
             'incidentes' => $incidentes,
             'metricas' => [
                 'total' => $total,
                 'leves' => $leves,
+                'moderados' => $moderados,
                 'graves' => $graves,
                 'fatales' => $fatales,
-                'danioMaterial' => $danioMaterial,
             ]
         ]);
     }
