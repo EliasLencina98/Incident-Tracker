@@ -7,21 +7,20 @@ class Incidente extends Model
 {
     protected $fillable = [
         "fecha",
-        "hora",
-        "tipo",
-        "gravedad",
+        "hora", /** nullable */
+        "tipo", /** nullable */
+        "gravedad", 
         "fatalidad",
-        "heridos",
+        "heridos", 
         "ubicacion",
         "latitud",
         "longitud",
-        "estado_calzada",
-        "clima",
-        "descripcion",
-        "causa_raiz",
-        "accion_correlativa",
-        "impacto_economico",
-        "estado",
+        "estado_calzada", /** nullable */
+        "clima", /** nullable */
+        "descripcion", /** nullable */
+        "causa_raiz", /** nullable */
+        "accion_correlativa", /** nullable */
+        "estado",  /** default pendiente */
         "vehiculo_id",
         "chofer_id",
     ];

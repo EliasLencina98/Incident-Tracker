@@ -117,9 +117,12 @@ async function buscarDatos() {
 
     document.getElementById("metrica-total").textContent = datos.metricas.total;
     document.getElementById("metrica-leves").textContent = datos.metricas.leves;
-    document.getElementById("metrica-graves").textContent = datos.metricas.graves;
-    document.getElementById("metrica-fatales").textContent = datos.metricas.fatales;
-    document.getElementById("metrica-danio-material").textContent = datos.metricas.danioMaterial;
+    document.getElementById("metrica-graves").textContent =
+        datos.metricas.graves;
+    document.getElementById("metrica-fatales").textContent =
+        datos.metricas.fatales;
+    document.getElementById("metrica-danio-material").textContent =
+        datos.metricas.danioMaterial;
 
     //marcador por cada incidente recibido
     datos.incidentes.forEach(function (incidente) {
@@ -155,7 +158,28 @@ async function buscarDatos() {
         fecha.textContent = "Fecha: " + incidente.fecha;
 
         const gravedad = document.createElement("p");
-        gravedad.textContent = "Gravedad: " + incidente.gravedad;
+        gravedad.textContent = "Gravedad: ";
+
+        const span = document.createElement("span");
+
+        switch (incidente.gravedad.toLowerCase().trim()) {
+            case "leve":
+                span.style.color = "green";
+                span.textContent = incidente.gravedad;
+                break;
+            case "grave":
+                span.style.color = "orange";
+                span.textContent = incidente.gravedad;
+                break;
+            case "fatal":
+                span.style.color = "red";
+                span.textContent = incidente.gravedad;
+                break;
+            default:
+                span.style.color = "skyblue"
+                span.textContent = incidente.gravedad;
+        }
+        gravedad.appendChild(span);
 
         const estado = document.createElement("p");
         estado.textContent = "Estado: " + incidente.estado;

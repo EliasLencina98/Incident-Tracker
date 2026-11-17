@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    color: rgb(212, 205, 205) !important;
+    color: rgb(212, 205, 205);
 }
 
 body {
@@ -105,13 +105,14 @@ body {
 
 .panel-izquierdo h2, .panel-mapa h3 {
     margin: 0 0 18px;
-    color: #243c60;
+    /* color: #243c60; */
+    color: #2c80ce;
     font-size: 20px;
 }
 
 .panel-izquierdo h3 {
     margin: 20px 0 12px;
-    color: #243c60;
+    color: #2c80ce;
     font-size: 18px;
 }
 
@@ -126,7 +127,8 @@ body {
 .titulo-fechas {
     margin: 0 0 4px;
     font-weight: bold;
-    color: #243c60;
+    /* color: #243c60; */
+    color: #2c80ce;
 }
 
 #form-filtros label {
@@ -151,7 +153,7 @@ body {
 .msj-filtro {
     min-height: 18px;
     margin: 12px 0 0;
-    color: #526174;
+    color: #52719b;
     font-size: 16px;
 }
 
@@ -183,7 +185,8 @@ body {
 .btn-reset {
     /* background-color: #f0f3f7; */
     background-color: #1d2b3e;
-    color: #243c60;
+    /* color: #243c60; */
+    color: #4871b0;
 }
 
 .btn-reset:hover {
@@ -229,7 +232,7 @@ body {
     margin-bottom: 10px;
     padding: 10px;
     /* background-color: #f4f6f9; */
-    background-color: #1b1e30;
+    background-color: #252943;
     border: 1px solid #344255;
     /* border: 1px solid #e1e6ed; */
     border-radius: 6px;
@@ -244,13 +247,13 @@ body {
 
 .tarjeta-incidente h4 {
     margin: 0 0 8px;
-    color: #243c60;
+    /* color: #243c60; */
     font-size: 15px;
 }
 
 .tarjeta-incidente p {
     margin: 5px 0;
-    color: #526174;
+    color: #a9c8f1;
     font-size: 14px;
 }
 
@@ -280,7 +283,8 @@ body {
 
 .metricas-generales h3 {
     margin: 0 0 8px;
-    color: #243c60;
+    /* color: #243c60; */
+    color: #cfd1d3;
     font-size: 14px;
 }
 
@@ -300,14 +304,16 @@ body {
 
 .metrica span{
     display: block;
-    color: #526174;
+    /* color: #526174; */
+    color: #d7dde4;
     font-size: 14px;
 }
 
 .metrica strong{
     display: block;
     margin-top: 8px;
-    color: #243c60;
+    /* color: #243c60; */
+    color: #d0d1d2;
     font-size: 28px;
 }
 
@@ -329,7 +335,8 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    color: #526174;
+    /* color: #526174; */
+    color: #131e2f;
     overflow-wrap: anywhere;
 }
 
@@ -337,7 +344,8 @@ body {
     margin: 0 0 12px;
     padding-bottom: 8px;
     border-bottom: 2px solid #356bc0;
-    color: #243c60;
+    /* color: #243c60; */
+    color: #131e2f;
     font-size: 17px;
 }
 
@@ -371,7 +379,8 @@ body {
     background-color: white;
     border-radius: 6px;
     box-shadow: 0 2px 6px #00000030;
-    color: #243c60;
+    /* color: #243c60; */
+    color: #0c0c15;
     font-size: 13px;
     line-height: 1.6;
 }
@@ -429,8 +438,10 @@ body {
 .formulario-contenedor {
     min-width: 0;
     padding: 20px;
-    background-color: white;
-    border: 1px solid #dde3eb;
+    /* background-color: white;
+    border: 1px solid #dde3eb; */
+    background-color: #1b1e30;
+    border: 1px solid #344255;
     border-radius: 10px;
     box-shadow: 0 3px 10px #243c6010;
     
@@ -457,7 +468,9 @@ body {
 .formulario-contenedor input, .formulario-contenedor select, .formulario-contenedor textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
+    background-color: #181b2b;
+    border: 1px solid #344255;
     border-radius: 5px;
     font-family: inherit;
     font-size: 14px;
@@ -485,9 +498,11 @@ body {
 
 /* MAPA REGISTRO */
 .registro-mapa {
-    background-color: white;
+    background-color: #1b1e30;
+    border: 1px solid #344255;
+    /* background-color: white; */
     padding: 20px;
-    border: 1px solid #dde3eb;
+    /* border: 1px solid #dde3eb; */
     border-radius: 10px;
     min-width: 0;
     box-shadow: 0 3px 10px #243c6010;
@@ -556,11 +571,13 @@ body {
 
 /* Detalle del incidente */
 .detalle-incidente {
-    max-width: 800px;
+    max-width: 900px;
     margin: 24px auto;
     padding: 24px;
-    background-color: white;
-    border: 1px solid #dde3eb;
+    /* background-color: white;
+    border: 1px solid #dde3eb; */
+    background-color: #1b1e30;
+    border: 1px solid #344255;
     border-radius: 10px;
 }
 
