@@ -1,152 +1,81 @@
-<!DOCTYPE html>
-<html lang="es">
+@extends("layouts.panel")
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - Contro de Incidentes</title>
+@section("titulo", "Incidentes")
 
-    <link rel="stylesheet" href="{{ asset('css/incidentes.css') }}">
+@push("styles")
+    <link rel="stylesheet" href="{{ asset("css/gestion.css") }}">
+@endpush
 
-    <!-- CSS de Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin="" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+@push("scripts")
+    <script src="{{ asset("js/incidentes-listado.js") }}" defer></script>
+@endpush
 
-    <!-- JavaScripts de Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js" defer></script> <!-- heat map -->
-    <script src="{{ asset('js/mapa-index.js') }}" defer></script>
+@section("contenido")
+    <section class="gestion">
+        <div class="panel-tarjeta gestion-encabezado">
+            <div>
+                <h1>Gestión de incidentes y flota</h1>
 
-</head>
-
-<body>
-    <header class="header">
-        <div>
-            <h1>Panel de control de incidentes</h1>
-            <h5>Sistema de visualización y análisis de incidentes viales</h5>
-        </div>
-    </header>
-
-    @if (session('mensaje'))
-    <div class="aviso">
-        <p class="aviso-exito" role="status">{{ session('mensaje') }}</p>
-    </div>
-    @endif
-
-    <main class="contenedor">
-
-        <!-- Panel izquiedo -->
-        <section class="panel-izquierdo">
-
-            <a href="{{ route('incidentes.create') }}" class="btn btn-agregar">+ Agregar incidente</a>
-
-            <!-- Seccion de filtros y agregar incidente -->
-
-            <h2 id="titulo-filtros-principal">Filtros Avanzados</h2>
-
-            <form id="form-filtros" action="{{ route('incidentes.obtenerDatos')}}" method="GET">
-
-                <p class="titulo-fechas">Rango de Fecha</p>
-
-                <label for="fecha_inicio">Desde:</label>
-                <input type="date" id="fecha_inicio" name="fecha_inicio">
-
-                <label for="fecha_fin">Hasta:</label>
-                <input type="date" id="fecha_fin" name="fecha_fin">
-
-                <label for="gravedad">Gravedad: </label>
-                <select id="gravedad" name="gravedad">
-                    <option value="">Todas</option>
-                    <option value="Leve">Leve</option>
-                    <option value="Grave">Grave</option>
-                    <option value="Fatal">Fatal</option>
-                    <option value="Danio Material">Daño Material</option>
-                </select>
-
-                <label for="tipo">Tipo de incidente: </label>
-                <select id="tipo" name="tipo">
-                    <option value="">Todos</option>
-                    <option value="Accidente vehicular">Accidente vehicular</option>
-                    <option value="Falla mecanica">Falla mecanica</option>
-                    <option value="Incidente operativo">Incidente operativo</option>
-                </select>
-
-                <label for="estado">Estado: </label>
-                <select id="estado" name="estado">
-                    <option value="">Todas</option>
-                    <option value="pendiente">pendiente</option>
-                    <option value="en proceso">en proceso</option>
-                    <option value="resuelto">resuelto</option>
-                </select>
-
-                <button type="submit" class=" btn btn-filtrar">Filtrar</button>
-                <button type="reset" class="btn btn-reset">Restablecer</button>
-            </form>
-
-            <p class="msj-filtro" role="status"></p>
-
-            <!-- Seccion de lista de incidentes -->
-            <h3>Incidentes recientes</h3>
-            <section class="lista-incidentes">
-
-                <div id="listado-incidentes"></div>
-            </section>
-
-        </section>
-
-        <!-- Mapa Leaflet y Metricas -->
-        <div class="mapa-metricas-columna">
-
-            <section class="panel-mapa" id="panel-mapa">
-                <h3 id="titulo-mapa">Mapa de Incidentes</h3>
-                <div id="mapa"></div>
-                <p>
-                    <strong>Mapa de calor: </strong>
-                    <span class="explicacion-calor"> Tonos azules indican menor concentracion y tonos rojos una mayor concentracion de incidentes registrados. </span>
+                <p class="panel-texto-secundario">
+                    Consulta y registro de incidentes, choferes y vehículos.
                 </p>
-            </section>
+            </div>
 
-            <!-- Metricas Generales -->
-            <section class="metricas-generales">
-                <h3>Metricas Generales</h3>
+            <div class="gestion-acciones">
+                <a href="{{ route("incidentes.create") }}" class="panel-boton panel-boton-verde">
+                    Registrar incidente
+                </a>
 
-                <div class="lista-metricas">
+                <a href="{{ route("choferes.create") }}" class="panel-boton gestion-boton-azul">
+                    Nuevo chofer
+                </a>
 
-                    <article class="metrica">
-                        <span>Total</span>
-                        <strong id="metrica-total"></strong>
-                    </article>
+                <a href="{{ route("vehiculos.create") }}" class="panel-boton gestion-boton-naranja">
+                    Agregar vehículo
+                </a>
+            </div>
+        </div>
 
-                    <article class="metrica">
-                        <span>Leves</span>
-                        <strong id="metrica-leves"></strong>
-                    </article>
+        <section class="panel-tarjeta gestion-listado">
+            <div class="gestion-listado-encabezado">
+                <h2>Incidentes registrados</h2>
 
-                    <article class="metrica">
-                        <span>Graves</span>
-                        <strong id="metrica-graves"></strong>
-                    </article>
+                <span class="gestion-etiqueta">
+                    Resultados: <span id="cantidad-incidentes">—</span>
+                </span>
+            </div>
 
-                    <article class="metrica">
-                        <span>Fatales</span>
-                        <strong id="metrica-fatales"></strong>
-                    </article>
+            <form id="filtros-listado" class="gestion-filtros" action="{{ route('incidentes.obtenerDatos') }}"method="GET">
 
-                    <article class="metrica">
-                        <span>Daño Material</span>
-                        <strong id="metrica-danio-material"></strong>
-                    </article>
-
+                <div>
+                    <label for="listado-gravedad">Gravedad</label>
+                    <select id="listado-gravedad" name="gravedad">
+                        <option value="">Todas</option>
+                        <option value="leve">Leve</option>
+                        <option value="moderado">Moderado</option>
+                        <option value="grave">Grave</option>
+                        <option value="fatal">Fatal</option>
+                    </select>
                 </div>
 
-            </section>
+                <div>
+                    <label for="listado-estado">Estado</label>
+                    <select id="listado-estado" name="estado">
+                        <option value="">Todos</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="en proceso">En proceso</option>
+                        <option value="resuelto">Resuelto</option>
+                    </select>
+                </div>
 
-        </div>
+                <button type="submit" class="panel-boton gestion-boton-azul">Buscar</button>
 
-    </main>
+                <button type="reset" class="panel-boton gestion-boton-secundario">Restablecer</button>
+            </form>
 
-</body>
+            <p id="mensaje-listado" class="panel-texto-secundario" role="status"></p>
 
-</html>
+            <div id="listado-incidentes" class="gestion-registros" data-url="{{ route("incidentes.obtenerDatos") }}"></div>
+        </section>
+    </section>
+@endsection

@@ -1,0 +1,235 @@
+/* Declaracion de tonos/colores/radio para la pagina (variables)*/
+:root {
+    --panel-fondo: #0f172a;
+    --panel-superficie: #1e293b;
+    --panel-sidebar: #182334;
+    --panel-borde: #334155;
+
+    --panel-texto: #f1f5f9;
+    --panel-texto-secundario: #a8b5c9;
+
+    --panel-azul:#2563eb;
+    --panel-azul-hover: #1d4ed8;
+    --panel-verde: #047857;
+    --panel-verde-hover: #065f46;
+
+    --panel-radio: 10px;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--panel-fondo);
+    color: var(--panel-texto);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+.panel { 
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "header header" "sidebar contenido";
+    min-height: 100vh;
+}
+
+/* Encabezado */
+
+.panel-header {
+    grid-area: header;
+    padding: 18px 24px;
+    background-color: var(--panel-superficie);
+    border-bottom: 1px solid var(--panel-borde);
+}
+
+.panel-marca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.panel-marca-icono {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    width: 44px;
+    height: 44px;
+
+    background-color: #172e53;
+    color: #93c5fd;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #365785;
+    border-radius: var(--panel-radio);
+}
+
+.panel-nombre {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.panel-descripcion {
+    margin: 3px 0 0;
+    color: var(--panel-texto-secundario);
+    font-size: 13px;
+}
+
+/* Navegacion lateral */
+.panel-sidebar {
+    grid-area: sidebar;
+
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-width: 0;
+    padding: 24px 14px;
+    background-color: var(--panel-sidebar);
+    border-right: var(--panel-borde);
+}
+
+.panel-menu-titulo {
+    margin: 0 10px 14px;
+    color: var(--panel-texto-secundario);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.7;
+    text-transform: uppercase;
+}
+
+.panel-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.panel-menu-enlace, .panel-menu-pendiente {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 11px 12px;
+    border: 1px solid var(--panel-borde);
+    color: var(--panel-texto);
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.panel-menu-enlace:hover {
+    background-color: var(--panel-superficie);
+}
+
+.panel-menu-enlace.activo {
+    background-color: var(--panel-azul);
+    border-color: var(--panel-azul);
+    color: #ffffff;
+}
+
+.panel-menu-enlace.activo:hover {
+    background-color: var(--panel-azul-hover);
+}
+
+.panel-menu-pendiente {
+    color: var(--panel-texto-secundario);
+}
+
+.panel-menu-pendiente small {
+    font-size: 11px;
+}
+
+.panel-siderbar-pie {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1 px solid var(--panel-borde);
+}
+
+.panel-siderbar-pie p {
+    margin: 0 0 12px;
+    color: var(--panel-texto-secundario);
+    font-size: 12px;
+}
+
+.panel-siderbar-pie .panel-boton {
+    width: 100%;
+}
+
+
+/* Contenido de las vistas */
+.panel-contenido {
+    grid-area: contenido;
+    min-width: 0;
+    padding: 32px;
+}
+
+.panel-vista-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.panel-vista-encabezado h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.panel-texto-secundario {
+    margin: 6px 0 0;
+    color: var(--panel-texto-secundario);
+}
+
+.panel-tarjeta {
+    padding: 24px;
+    background-color: var(--panel-superficie);
+    border: 1px solid var(--panel-borde);
+    border-radius: var(--panel-radio);
+}
+
+.panel-tarjeta h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/* Acciones y avisos */
+.panel-boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.panel-boton-verde {
+    color: #ffffff;
+    background-color: var(--panel-verde);
+}
+
+.panel-boton-verde:hover {
+    background-color: var(--panel-verde-hover);
+}
+
+.panel-aviso {
+    margin: 0 0 24px;
+    padding: 12px 16px;
+    background-color: #12382e;
+    color: #a7f3d0;
+    border: 1px solid #28765b;
+    border-radius: 8px;
+}

@@ -30,9 +30,9 @@ leyenda.onAdd = function () {
     contenido.innerHTML = `
         <strong>Gravedad</strong>
         <div><span class="color-leve"></span> Leve</div>
+        <div><span class="color-moderado"></span> Moderado</div>
         <div><span class="color-grave"></span> Grave</div>
         <div><span class="color-fatal"></span> Fatal</div>
-        <div><span class="color-material"></span> Daño material</div>
     `;
     return contenido;
 };
@@ -79,6 +79,7 @@ mapa.on("overlayremove", function (evento) {
 });
 
 async function buscarDatos() {
+
     const fechaInicio = document.getElementById("fecha_inicio").value;
     const fechaFin = document.getElementById("fecha_fin").value;
     const gravedad = document.getElementById("gravedad").value;
@@ -104,11 +105,24 @@ async function buscarDatos() {
     msjFiltro.textContent = "Buscando incidentes...";
 
     //enviamos consulta
-    const respuesta = await fetch(url);
+    let datos;
+    try {
+        const respuesta = await fetch(url, {
+            headers: {
+                Accept: "application/json",
+            },
+        });
 
-    //json a datos js
-    const datos = await respuesta.json();
-    console.log(datos);
+        if(!respuesta.ok){
+            throw new Error ("La consulta fallo: HTTP ${respuesta.status}");
+        }
+
+        //json a datos js
+        datos = await respuesta.json();
+    } catch {
+        console.log(error);
+        msjFiltro.textContent = "No se pudieron cargar los incidentes. Intenta de nuevo";
+    }
 
     //borramos marcadores, inicializamos listado incidentes y puntos de calor
     capasIncidentes.clearLayers();
@@ -133,7 +147,7 @@ async function buscarDatos() {
             case "leve":
                 intensidad = 0.5;
                 break;
-            case "daño material":
+            case "moderado":
                 intensidad = 0.25;
                 break;
             case "grave":
@@ -268,7 +282,7 @@ async function buscarDatos() {
         detalle.appendChild(detallePopUp);
 
         //apariencia del marcador segun gravedad
-        let claseIcono = "icono-material";
+        let claseIcono = "icono-moderado";
 
         if (incidente.gravedad === "Leve") {
             claseIcono = "icono-leve";
