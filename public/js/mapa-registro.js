@@ -11,6 +11,17 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let marcadorActual = null;
 
+//Conserva la ubicacion anterior al querer modificar/crear un incidente
+const latitudGuardada = document.getElementById("latitud").value;
+const longitudGuardada = document.getElementById("longitud").value;
+
+if (latitudGuardada !== "" && longitudGuardada !== ""){
+    const coordenadas = [Number(latitudGuardada), Number(longitudGuardada)];
+
+    marcadorActual = L.marker(coordenadas).addTo(mapa);
+    mapa.setView(coordenadas, 14);
+}
+
 mapa.on('click', async function(e) {
     const lat = e.latlng.lat;
     const lon = e.latlng.lng;
@@ -46,6 +57,7 @@ mapa.on('click', async function(e) {
                 .bindPopup(`<b>Ubicación:</b><br>${direccionCompleta}`)
                 .openPopup();
 
+            mapa.setView([latAjustada, lonAjustada], 14);
 
             console.log("Dirección encontrada:", direccionCompleta);
 

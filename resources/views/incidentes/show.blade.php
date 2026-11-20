@@ -1,52 +1,87 @@
-<!DOCTYPE html>
-    <html>
+@extends('layouts.panel')
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Detalle del incidente</title>
+@section('titulo', 'Detalle del incidente')
 
-            <link rel="stylesheet" href="{{ asset('css/incidentes.css') }}">
-        </head>
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/gestion.css') }}">
+@endpush
 
-        <body>
+@section('contenido')
+    <section class="gestion">
+        <div class="panel-tarjeta gestion-encabezado">
+            <div>
+                <h1>Incidente #{{ $incidente->id }}</h1>
 
-            <header class="header">
-                <h1>Panel de control de incidentes</h1>
-                <h5>Sistema de visualización y análisis de incidentes de transporte</h5>
-            </header>
+                <p class="panel-texto-secundario">
+                    {{ ucfirst($incidente->tipo) }}
+                </p>
+            </div>
 
-            <main class="detalle-incidente">
-                <a href="{{ route('incidentes.index') }}">Volver al panel</a>
+            <div class="gestion-acciones">
+                <a href="{{ route('incidentes.index') }}" class="panel-boton gestion-boton-secundario">
+                    Volver al listado
+                </a>
 
-                <h2>{{ $incidente->tipo }}</h2>
+                <a href="{{ route('incidentes.edit', $incidente->id) }}" class="panel-boton panel-boton-verde">
+                    Modificar
+                </a>
+            </div>
+        </div>
 
-                <h3>Fecha</h3>
-                <p>{{ $incidente->fecha }}</p>
+        <div class="panel-tarjeta gestion-detalle">
+            <h2>Datos generales</h2>
 
-                <h3>Gravedad</h3>
-                <p>{{ $incidente->gravedad }}</p>
+            <dl class="detalle-datos">
+                @foreach ([
+                    'Fecha' => $incidente->fecha,
+                    'Hora' => $incidente->hora ? substr($incidente->hora, 0, 5) : 'Sin informar',
+                    'Gravedad' => ucfirst($incidente->gravedad),
+                    'Estado' => ucfirst($incidente->estado),
+                    'Heridos' => $incidente->heridos,
+                    'Fallecidos' => $incidente->fatalidad,
+                    'Chofer' => $incidente->chofer?->nombre ?? 'Sin asignar',
+                    'Vehículo' => $incidente->vehiculo?->patente ?? 'Sin asignar',
+                    'Clima' => $incidente->clima ?? 'Sin informar',
+                    'Estado de calzada' => $incidente->estado_calzada ?? 'Sin informar',
+                    'Latitud' => $incidente->latitud,
+                    'Longitud' => $incidente->longitud
+                    ] as $etiqueta => $valor)
+                    <div>
+                        <dt>{{ $etiqueta }}</dt>
+                        <dd>{{ $valor }}</dd>
+                    </div>
+                @endforeach
+            </dl>
+        </div>
 
-                <h3>Estado</h3>
-                <p>{{ $incidente->estado }}</p>
+        <div class="panel-tarjeta gestion-detalle">
+            <h2>Ubicación y seguimiento</h2>
 
-                <h3>Ubicacion</h3>
-                <p>{{ $incidente->ubicacion }}</p>
+            <dl class="detalle-datos detalle-datos-completos">
+                <div>
+                    <dt>Ubicación</dt>
+                    <dd>{{ $incidente->ubicacion }}</dd>
+                </div>
 
-                <h3>Descripcion</h3>
-                <p>{{ $incidente->descripcion }}</p>
+                <div>
+                    <dt>Descripción</dt>
+                    <dd>{{ $incidente->descripcion }}</dd>
+                </div>
 
-                <h3>Causa Raiz</h3>
-                <p>{{ $incidente->causa_raiz }}</p>
+                <div>
+                    <dt>Causa raíz</dt>
+                    <dd>
+                        {{ $incidente->causa_raiz ?? 'Pendiente de investigación' }}
+                    </dd>
+                </div>
 
-                <h3>Accion correlativa</h3>
-                <p>{{ $incidente->accion_correlativa }}</p>
-
-                <h3>Coordenadas</h3>
-                <p><strong>Latitud:</strong>{{ $incidente->latitud }}</p>
-                <p><strong>Longitud:</strong>{{ $incidente->longitud }}</p>
-
-            </main>
-
-        </body>
-    </html>
+                <div>
+                    <dt>Acción correlativa</dt>
+                    <dd>
+                        {{ $incidente->accion_correlativa ?? 'Sin informar' }}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </section>
+@endsection

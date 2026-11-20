@@ -1,0 +1,323 @@
+/* general*/
+.gestion {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.gestion .gestion-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.gestion .gestion-encabezado h1 {
+    margin: 0;
+    font-size: 23px;
+}
+
+.gestion .gestion-acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.gestion .gestion-boton-azul {
+    color: #ffffff;
+    background-color: var(--panel-azul);
+}
+
+.gestion .gestion-boton-azul:hover {
+    background-color: var(--panel-azul-hover);
+}
+
+.gestion .gestion-boton-naranja {
+    color: #ffffff;
+    background-color: #b45309;
+}
+
+.gestion .gestion-boton-naranja:hover {
+    background-color: #92400e;
+}
+
+.gestion .gestion-listado-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 18px;
+    border: 1px solid var(--panel-borde);
+}
+
+.gestion .gestion-registros {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+
+    height: 480px;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-gutter: stable;
+}
+
+.gestion .gestion-registro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px;
+
+    background-color: var(--panel-fondo);
+    border: 1px solid var(--panel-borde);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.gestion .gestion-registro-contenido {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere; /*Desbordar palabra*/
+}
+
+.gestion .gestion-registro-titulo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+} 
+
+.gestion .gestion-registro-contenido h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.gestion .gestion-identificador {
+    color: var(--panel-texto-secundario);
+    font-size: 12px;
+}
+
+.gestion .gestion-etiqueta {
+    display: flex;
+    padding: 3px 8px;
+    color: var(--panel-texto);
+    background-color: var(--panel-superficie);
+    border: 1px solid var(--panel-borde);
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.gestion .gestion-descripcion {
+    margin: 10px 0;
+    color: var(--panel-texto-secundario);
+    font-size: 14px;
+}
+
+.gestion .gestion-filtros {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.gestion .gestion-filtros > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.gestion .gestion-filtros label {
+    font-size: 13px;
+    color: var(--panel-texto-secundario);
+}
+
+.gestion .gestion-filtros .gestion-busqueda {
+    flex: 1 1 280px;
+}
+
+.gestion .gestion-filtros select, .gestion .gestion-filtros input {
+    width: 100%;
+    padding: 9px 10px;
+    color: var(--panel-texto);
+    background-color: var(--panel-fondo);
+    border: 1px solid var(--panel-borde);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 13px;
+    color-scheme: dark;
+}
+
+.gestion .gestion-boton-secundario {
+    color: var(--panel-texto);
+    background-color: var(--panel-borde);
+}
+
+.gestion .gestion-pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.gestion .gestion-pestana {
+    color: var(--panel-texto);
+    background-color: var(--panel-borde);
+}
+
+.gestion .gestion-pestana.activo {
+    background-color: var(--panel-azul);
+}
+
+.gestion .gestion-registro-contenido p {
+    margin: 6px 0;
+    color: var(--panel-texto-secundario);
+    font-size: 13px;
+}
+
+/* Incidentes */
+.gestion .incidente-columnas {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.gestion .incidente-columnas > div {
+    min-width: 0;
+}
+
+.gestion .incidente-columnas h2 {
+    margin-bottom: 20px;
+}
+
+.gestion .campo-completo {
+    grid-column: 1 / -1;
+}
+
+.gestion .gestion-campos textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px;
+    color: var(--panel-texto);
+    background-color: var(--panel-fondo);
+    border: 1px solid var(--panel-borde);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.gestion #mapa-seleccion {
+    height: 420px;
+    margin-top: 16px;
+    border-radius: 8px;
+}
+
+
+/* Choferes y vehiculos */
+
+.gestion .gestion-formulario {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.gestion .gestion-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.gestion .gestion-campos > div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.gestion .gestion-campos label {
+    font-size: 13px;
+    color: var(--panel-texto-secundario);
+}
+
+.gestion .gestion-campos input,
+.gestion .gestion-campos select {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 12px;
+    color: var(--panel-texto);
+    background-color: var(--panel-fondo);
+    border: 1px solid var(--panel-borde);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 14px;
+    color-scheme: dark;
+}
+
+.gestion .gestion-formulario-acciones {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--panel-borde);
+}
+
+.gestion .gestion-errores {
+    margin: 0 0 20px;
+    padding: 15px 15px 15px 35px;
+    color: #fecaca;
+    background-color: #451a1a;
+    border: 1px solid #7f1d1d;
+    border-radius: 6px;
+}
+
+/* Ver detalles */
+
+.gestion .gestion-registro {
+    flex-shrink: 0;
+}
+
+.gestion .gestion-detalle {
+    margin-bottom: 20px;
+}
+
+.gestion .detalle-datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+
+    margin: 20px 0 0;
+}
+
+.gestion .detalle-datos > div {
+    min-width: 0;
+    padding: 14px;
+
+    background-color: var(--panel-fondo);
+    border: 1px solid var(--panel-borde);
+    border-radius: 8px;
+}
+
+.gestion .detalle-datos dt {
+    margin-bottom: 6px;
+    color: var(--panel-texto-secundario);
+    font-size: 13px;
+}
+
+.gestion .detalle-datos dd {
+    margin: 0;
+    color: var(--panel-texto);
+    font-size: 15px;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.gestion .detalle-datos-completos {
+    grid-template-columns: minmax(0, 1fr);
+}

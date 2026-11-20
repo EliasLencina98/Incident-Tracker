@@ -26,7 +26,6 @@
     </nav>
 
     <div class="panel-sidebar-pie">
-        <p> Region Neuquen / Alto valle </p>
         <a href="{{ route("incidentes.create") }}" class="panel-boton panel-boton-verde"> Registrar incidentes </a>
     </div>
 

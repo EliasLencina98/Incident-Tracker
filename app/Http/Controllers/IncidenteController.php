@@ -15,10 +15,7 @@ class IncidenteController extends Controller
 
     public function index(): View
     {
-
-        $incidentes = Incidente::with(['vehiculo', 'chofer'])->orderBy("fecha", "desc")->orderBy("id", "desc")->get();
-
-        return view("incidentes.index", compact("incidentes"));
+        return view("incidentes.index");
     }
 
 
@@ -47,16 +44,16 @@ class IncidenteController extends Controller
             "fatalidad" => ["required", "integer"],
             "heridos" => ["required", "integer", "min:0"],
             "ubicacion" => ["string", "required"],
-            "latitud" => ["numeric", "required"],
-            "longitud" => ["numeric", "required"],
+            "latitud" => ["numeric", "required", "between:-90,90"],
+            "longitud" => ["numeric", "required", "between:-180,180"],
             "estado_calzada" => ["nullable", "string"],
             "clima" => ["nullable", "string"],
             "descripcion" => ["string", "required"],
             "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
             "accion_correlativa" => ["nullable", "string"],
             "estado" => ["required", "in:pendiente,en proceso,resuelto"],
-            "vehiculo_id" => ["required", "exists:vehiculos,id"],
-            "chofer_id" => ["required", "exists:choferes,id"],
+            "vehiculo_id" => ["required", "exists:vehiculo,id"],
+            "chofer_id" => ["required", "exists:chofer,id"],
         ]);
 
         // calculamos automaticamente la gravedad usando la matriz de gravedad
@@ -143,6 +140,7 @@ class IncidenteController extends Controller
             "gravedad" => ["nullable", "in:leve,moderado,grave,fatal"],
             "tipo" => ["nullable", "string"],
             "estado" => ["nullable", "in:pendiente,en proceso,resuelto"],
+            "buscar" => ["nullable", "string", "max:100"],
         ]);
 
         $consulta = Incidente::with(['vehiculo', 'chofer']);
@@ -166,6 +164,20 @@ class IncidenteController extends Controller
         if (!empty($datosFiltros["estado"])) {
             $consulta->where("estado", $datosFiltros["estado"]);
         }
+
+        if (!empty($datosFiltros["buscar"])) {
+            $buscar = "%" . trim($datosFiltros["buscar"]) . "%";
+
+            $consulta->where(function ($query) use ($buscar) {
+                $query->where("tipo", "like", $buscar)
+                ->orWhereHas("chofer", function ($chofer) use ($buscar) {
+                        $chofer->where("nombre", "like", $buscar);
+                })->orWhereHas("vehiculo", function ($vehiculo) use ($buscar) {
+                        $vehiculo->where("patente", "like", $buscar);
+                });
+            });
+        }
+
 
         $incidentes = (clone $consulta)->orderBy("fecha", "desc")->orderBy("id", "desc")->get();
 

@@ -16,7 +16,7 @@ return new class extends Migration
             
             //Clasificacion del incidente 
             $table->date("fecha");
-            $table->time("hora")->nullabla();
+            $table->time("hora")->nullable();
             $table->string("tipo");
             $table->string("gravedad");
             $table->unsignedInteger("fatalidad")->default(0);
