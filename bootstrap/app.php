@@ -12,7 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        //Creacion de alias para utilizar en rutas
+        $middleware->alias([
+            "rol" => \App\Http\Middleware\VerificarRol::class,
+        ]);
+
+        $middleware->redirectGuestsTo("/login");
+        $middleware->redirectUsersTo("/");
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

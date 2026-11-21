@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        
         <title> @yield("titulo", "Inicio") | Panel de control de accidentes </title>
         <link rel="stylesheet" href="{{ asset('css/panel.css') }}">
         @stack("styles") <!-- Para agregar estilos en las otras views -->
