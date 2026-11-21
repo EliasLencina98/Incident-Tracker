@@ -321,3 +321,40 @@
 .gestion .detalle-datos-completos {
     grid-template-columns: minmax(0, 1fr);
 }
+
+/* Acceso gestion */
+.acceso {
+    display: grid;
+    place-items: center; /*justify-content y align-items*/
+    min-height: 100dvh;
+    padding: 24px;
+}
+
+.acceso-contenedor {
+    width: 100%;
+    max-width: 440px;
+}
+
+.acceso-contenedor h1 {
+    margin: 0 0 24px;
+    font-size: 24px;
+}
+
+.gestion .acceso-campos {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+/* Boton eliminar en incidentes/choferes/vehiculos */
+.gestion .gestion-boton-rojo {
+    color: #ffffff;
+    background-color: #b91c1c;
+}
+
+.gestion .gestion-boton-rojo:hover {
+    background-color: #991b1b;
+}
+
+.gestion .gestion-boton-rojo:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}

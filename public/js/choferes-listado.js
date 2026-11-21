@@ -50,6 +50,7 @@ async function buscarChoferes(){
             editar.href = "/choferes/" + chofer.id + "/editar";
 
             acciones.append(detalle, editar);
+            agregarBotonEliminar(acciones, "/choferes/" + chofer.id, buscarChoferes);
             tarjeta.append(acciones);
 
             listadoChoferes.append(tarjeta);

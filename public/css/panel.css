@@ -239,3 +239,25 @@ body {
     border: 1px solid #28765b;
     border-radius: 8px;
 }
+
+/* Header */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.panel-sesion {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 13px;
+}
+
+.panel-salir {
+    color: var(--panel-texto);
+    background-color: var(--panel-borde);
+}

@@ -37,7 +37,7 @@ class Incidente extends Model
 
     public function responsables()
     {
-        return $this->belongsToMany(Usuario::class, 'responsables_de_investigacion', 'incidente_id', 'usuario_id')
+        return $this->belongsToMany(User::class, 'responsables_de_investigacion', 'incidente_id', 'usuario_id')
                     ->withPivot('fecha_asignacion')
                     ->withTimestamps();
     }

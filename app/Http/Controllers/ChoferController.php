@@ -99,4 +99,20 @@ class ChoferController extends Controller
         $resultado = ["choferes" => $consulta->orderBy("nombre")->get()];
         return response()->json($resultado);
     }
+
+    public function destroy(int $id)
+    {
+        $chofer = Chofer::findOrFail($id);
+
+        //Solo si el chofer no esta involucrado en ningun accidente
+        if($chofer->incidentes()->exists()){
+            return response()->json(["mensaje" => "No se puede eliminar, el chofer tiene incidentes asociados."], 400);
+        }
+
+        $chofer->delete();
+
+        return response()->json([
+            'mensaje' => 'Chofer eliminado correctamente.',
+        ]);
+    }
 }

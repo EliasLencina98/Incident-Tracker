@@ -14,7 +14,7 @@
 @endpush
 
 @section("contenido")
-    <section class="gestion">
+    <section class="gestion" id="gestion-panel" data-eliminar ="{{ auth()->user()->rol === "administrador" ? "si" : "no" }}">
 
         <div class="panel-tarjeta gestion-encabezado">
             <h1>Gestión de incidentes y flota</h1>

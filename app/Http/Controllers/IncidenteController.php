@@ -41,7 +41,7 @@ class IncidenteController extends Controller
             "fecha" => ["date", "required", "date_format:Y-m-d"],
             "hora" => ["nullable", "date_format:H:i"],
             "tipo" => ["required", "in:colision/choque vehicular,impacto objeto fijo,vuelco,despiste,atropello,falla mecanica,principio de incendio/incendio,daño menor,casi incidente"],
-            "fatalidad" => ["required", "integer"],
+            "fatalidad" => ["required", "integer", "min:0"],
             "heridos" => ["required", "integer", "min:0"],
             "ubicacion" => ["string", "required"],
             "latitud" => ["numeric", "required", "between:-90,90"],
@@ -104,19 +104,19 @@ class IncidenteController extends Controller
             "fecha" => ["date", "required", "date_format:Y-m-d"],
             "hora" => ["nullable", "date_format:H:i"],
             "tipo" => ["required", "in:colision/choque vehicular,impacto objeto fijo,vuelco,despiste,atropello,falla mecanica,principio de incendio/incendio,daño menor,casi incidente"],
-            "fatalidad" => ["required", "integer"],
+            "fatalidad" => ["required", "integer", "min:0"],
             "heridos" => ["required", "integer", "min:0"],
             "ubicacion" => ["string", "required"],
-            "latitud" => ["numeric", "required"],
-            "longitud" => ["numeric", "required"],
+            "latitud" => ["numeric", "required", "between:-90,90"],
+            "longitud" => ["numeric", "required", "between:-180,180"],
             "estado_calzada" => ["nullable", "string"],
             "clima" => ["nullable", "string"],
             "descripcion" => ["string", "required"],
             "causa_raiz" => ["nullable", "in:Factor humano,Falla mecanica,Condiciones climaticas,Otro"],
             "accion_correlativa" => ["nullable", "string"],
             "estado" => ["required", "in:pendiente,en proceso,resuelto"],
-            "vehiculo_id" => ["required", "exists:vehiculos,id"],
-            "chofer_id" => ["required", "exists:choferes,id"],
+            "vehiculo_id" => ["required", "exists:vehiculo,id"],
+            "chofer_id" => ["required", "exists:chofer,id"],
         ]);
 
         // en caso que se modifique el tipo, heridos o fatalidad, volvemos a recalcular
@@ -196,6 +196,16 @@ class IncidenteController extends Controller
                 'graves' => $graves,
                 'fatales' => $fatales,
             ]
+        ]);
+    }
+
+    public function destroy(int $id)
+    {
+        $incidente = Incidente::findOrFail($id);
+        $incidente->delete();
+
+        return response()->json([
+            'mensaje' => 'Incidente eliminado correctamente.',
         ]);
     }
 }

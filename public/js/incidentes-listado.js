@@ -59,6 +59,7 @@ async function buscarIncidentes(){
             editar.href = "/incidentes/" + incidente.id + "/edit";
 
             acciones.append(detalle, editar);
+            agregarBotonEliminar(acciones, "/incidentes/" + incidente.id, buscarIncidentes);
             tarjeta.append(contenido, acciones);
             listado.append(tarjeta);
         });

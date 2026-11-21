@@ -27,6 +27,10 @@ class VehiculoController extends Controller
 
     public function store(Request $request)
     {
+
+        //Normalizacion de patente
+        $request->merge(['patente' => strtoupper(trim($request->input('patente', ''))),]);
+
         $request->validate([
             'patente' => 'required|string|unique:vehiculo,patente|max:20',
             'modelo' => 'required|string|max:255',
@@ -35,7 +39,7 @@ class VehiculoController extends Controller
         ]);
 
         Vehiculo::create([
-            'patente' => strtoupper($request->patente),
+            'patente' => $request->patente,
             'modelo' => $request->modelo,
             'anio' => $request->anio,
             'tipo_vehiculo' => $request->tipo_vehiculo,
@@ -54,6 +58,9 @@ class VehiculoController extends Controller
     {
         $vehiculo = Vehiculo::findOrFail($id);
 
+        //Normalizacion de patente
+        $request->merge(['patente' => strtoupper(trim($request->input('patente', ''))),]);
+
         $request->validate([
             'patente' => 'required|string|max:20|unique:vehiculo,patente,' . $vehiculo->id,
             'modelo' => 'required|string|max:255',
@@ -62,7 +69,7 @@ class VehiculoController extends Controller
         ]);
 
         $vehiculo->update([
-            'patente' => strtoupper($request->patente),
+            'patente' => $request->patente,
             'modelo' => $request->modelo,
             'anio' => $request->anio,
             'tipo_vehiculo' => $request->tipo_vehiculo,
@@ -79,7 +86,7 @@ class VehiculoController extends Controller
         $consulta = Vehiculo::query();
 
         if(!empty($datos["buscar"])){
-            $buscar = "%" . $datos["buscar"] . "%";
+            $buscar = "%" . trim($datos["buscar"]) . "%";
 
             $consulta->where(function ($query) use ($buscar) {
                 $query->where("patente", "like", $buscar)
@@ -90,5 +97,21 @@ class VehiculoController extends Controller
 
         $resultado = ["vehiculos" => $consulta->orderBy("patente")->get()];
         return response()->json($resultado);
+    }
+
+    public function destroy(int $id)
+    {
+        $vehiculo = Vehiculo::findOrFail($id);
+
+        //Solo si el vehiculo no esta involucrado en ningun accidente
+        if($vehiculo->incidentes()->exists()){
+            return response()->json(["mensaje" => "No se puede eliminar, el vehiculo tiene incidentes asociados."], 400);
+        }
+
+        $vehiculo->delete();
+
+        return response()->json([
+            'mensaje' => 'Vehiculo eliminado correctamente.',
+        ]);
     }
 }

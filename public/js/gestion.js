@@ -26,5 +26,54 @@ pestanas.forEach(function (boton) {
     });
 });
 
+//Agregar boton eliminar (administrador/operario)
+function agregarBotonEliminar (contenedor, url, actualizarListado){
 
+    const permiso = document.getElementById("gestion-panel").dataset.eliminar; //data de la etiqueta html
+
+    //Operario
+    if(permiso !== "si"){
+        return;
+    }
+
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.textContent = "Eliminar";
+    boton.className = "panel-boton gestion-boton-rojo";
+
+    boton.addEventListener("click", async function(evento) {
+        if( !confirm("¿Queres eliminar este registro?") ) {
+            return;
+        }
+
+        boton.disabled = true;
+
+        try {
+            const respuesta = await fetch(url, {
+                method: "DELETE",
+                headers: {
+                    Accept: "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                }
+            });
+
+            const datos = await respuesta.json();
+
+            if(!respuesta.ok){
+                throw new Error(datos.mensaje || datos.message || "No se pudo elinar el registro");
+            }
+
+            alert(datos.mensaje);
+            actualizarListado();
+
+        } catch (error){
+            alert(error.message);
+            
+        } finally {
+            boton.disabled = false;
+        }
+    });
+
+    contenedor.appendChild(boton);
+}
 
