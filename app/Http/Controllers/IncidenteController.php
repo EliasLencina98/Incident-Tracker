@@ -18,6 +18,28 @@ class IncidenteController extends Controller
         return view("incidentes.index");
     }
 
+    public function dashboard()
+    {
+        $tiposDisponibles = Incidente::query()
+            ->whereNotNull('tipo')
+            ->distinct()
+            ->orderBy('tipo')
+            ->pluck('tipo');
+
+        $estadosDisponibles = Incidente::query()
+            ->whereNotNull('estado')
+            ->distinct()
+            ->orderBy('estado')
+            ->pluck('estado');
+
+        $gravedadDisponibles = Incidente::query()
+            ->whereNotNull('gravedad')
+            ->distinct()
+            ->orderBy('gravedad')
+            ->pluck('gravedad');
+
+        return view('incidentes.dashboard', compact('tiposDisponibles', 'estadosDisponibles', 'gravedadDisponibles'));
+    }
 
     public function create(): View
     {
@@ -199,6 +221,101 @@ class IncidenteController extends Controller
         ]);
     }
 
+    public function dashboardDatos(Request $request)
+    {
+        $filtros = $request->validate([
+            'fecha_inicio' => ['nullable', 'date_format:Y-m-d'],
+            'fecha_fin'    => [
+                'nullable',
+                'date_format:Y-m-d',
+                Rule::when($request->filled('fecha_inicio'), 'after_or_equal:fecha_inicio'),
+            ],
+            'gravedad'     => ['nullable', 'in:Leve,Moderado,Grave,Fatal'],
+            'tipo'         => ['nullable', 'string'],
+            'estado'       => ['nullable', 'in:pendiente,en proceso,resuelto'],
+        ]);
+
+        $query = Incidente::query();
+
+        if (!empty($filtros['fecha_inicio'])) {
+            $query->whereDate('fecha', '>=', $filtros['fecha_inicio']);
+        }
+
+        if (!empty($filtros['fecha_fin'])) {
+            $query->whereDate('fecha', '<=', $filtros['fecha_fin']);
+        }
+
+        if (!empty($filtros['gravedad'])) {
+            $query->where('gravedad', $filtros['gravedad']);
+        }
+
+        if (!empty($filtros['tipo'])) {
+            $query->where('tipo', $filtros['tipo']);
+        }
+
+        if (!empty($filtros['estado'])) {
+            $query->where('estado', $filtros['estado']);
+        }
+
+        // KPIs por gravedad respetando los filtros activos
+        $porGravedad = (clone $query)
+            ->selectRaw('gravedad, COUNT(*) as total')
+            ->groupBy('gravedad')
+            ->pluck('total', 'gravedad');
+
+        $total    = $porGravedad->sum();
+        $leves    = (int) ($porGravedad['Leve'] ?? 0);
+        $moderados   = (int) ($porGravedad['Moderado'] ?? 0);
+        $graves  = (int) ($porGravedad['Grave'] ?? 0);
+        $fatales = (int) ($porGravedad['Fatal'] ?? 0);
+
+        $pct = fn(int $cantidad): int => $total > 0 ? (int) round(($cantidad / $total) * 100) : 0;
+
+        $kpis = [
+            'total'        => $total,
+            'leves'        => $leves,
+            'leves_pct'    => $pct($leves),
+            'moderados'       => $moderados,
+            'moderados_pct'   => $pct($moderados),
+            'graves'       => $graves,
+            'graves_pct'   => $pct($graves),
+            'fatales'      => $fatales,
+            'fatales_pct'  => $pct($fatales),
+        ];
+
+        $tendencia = (clone $query)
+            ->selectRaw("strftime('%Y-%m', fecha) as mes, COUNT(*) as total")
+            ->groupBy('mes')
+            ->orderBy('mes')
+            ->get();
+
+        // Distribución por tipo
+        $porTipo = (clone $query)
+            ->selectRaw('tipo, COUNT(*) as total')
+            ->groupBy('tipo')
+            ->orderByDesc('total')
+            ->get();
+
+
+        $incidentes = (clone $query)
+            ->whereNotNull('latitud')
+            ->whereNotNull('longitud')
+            ->get(['id', 'fecha', 'tipo', 'gravedad', 'estado', 'latitud', 'longitud', 'ubicacion', 'descripcion']);
+
+        return response()->json([
+            'kpis'          => $kpis,
+            'tendencia'     => $tendencia,
+            'por_gravedad'  => [
+                'leve'          => $leves,
+                'grave'         => $graves,
+                'fatal'         => $fatales,
+                'moderado' => $moderados,
+            ],
+            'por_tipo'      => $porTipo,
+            'incidentes' => $incidentes,
+            ]);
+    }
+    
     public function destroy(int $id)
     {
         $incidente = Incidente::findOrFail($id);

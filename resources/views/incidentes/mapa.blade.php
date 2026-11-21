@@ -31,7 +31,7 @@
             <section class="panel-tarjeta mapa-filtros">
                 <h2>Filtros</h2>
 
-                <form action="{{ route("incidentes.obtenerDatos") }}" method="GET" id="form-filtros">
+                <form action="{{ route('incidentes.obtenerDatos') }}" method="GET" id="form-filtros">
 
                     <label for="fecha_inicio">Desde:</label>
                     <input type="date" id="fecha_inicio" name="fecha_inicio">

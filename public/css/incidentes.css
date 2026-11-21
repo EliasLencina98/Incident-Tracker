@@ -1,0 +1,603 @@
+* {
+    box-sizing: border-box;
+    /* color: rgb(212, 205, 205); */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    /* background-color: #f4f6f9; */
+    background-color: #151721; /* modo oscuro */
+}
+
+.header {
+    /* background-color: #243c60; */
+    color: white;
+    padding: 20px 30px;
+    background-color: #1b1e30;
+}
+
+.header > div{
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header h5 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: white;
+    
+}
+
+
+
+
+
+/* INDEX */
+
+/* Panel principal */
+
+/*Aviso exito*/
+.aviso {
+    max-width: 400px;
+    margin: 16px auto 0;
+    padding: 0 24px;;
+}
+
+.aviso-exito {
+    text-align: center;
+
+    margin: 0;
+    padding: 12px 16px;
+    border: 1px solid #b8ddc5;
+    border-radius: 6px;
+    background-color: #eaf6ee;
+    color: #196b3b;
+    font-size: 14px;
+}
+
+#titulo-filtros-principal {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.contenedor {
+    display: grid;
+    grid-template-rows: 960px;
+    grid-template-columns: 350px minmax(0, 1fr);
+    align-items: stretch;
+    gap: 24px;
+
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Panel lateral y panel mapa */
+.panel-izquierdo {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.panel-mapa {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.panel-izquierdo, .panel-mapa {
+    min-width: 0;
+    padding: 20px;
+    /* background-color: white; */
+    background-color: #1b1e30;
+    border: 1px solid #344255;
+    /* border: 1px solid #344255; */
+    border-radius: 10px;
+    box-shadow: 0 3px 10px #243c6010;
+}
+
+.panel-izquierdo h2, .panel-mapa h3 {
+    margin: 0 0 18px;
+    /* color: #243c60; */
+    color: #2c80ce;
+    font-size: 20px;
+}
+
+.panel-izquierdo h3 {
+    margin: 20px 0 12px;
+    color: #2c80ce;
+    font-size: 18px;
+}
+
+/* Filtros */
+
+#form-filtros {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.titulo-fechas {
+    margin: 0 0 4px;
+    font-weight: bold;
+    /* color: #243c60; */
+    color: #2c80ce;
+}
+
+#form-filtros label {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+
+#form-filtros select, #form-filtros input[type="date"] {
+    width: 100%;
+    min-width: 0;
+    padding: 9px;
+    /* border: 1px solid #ccd3dc; */
+    border: 1px solid #344255;
+    border-radius: 5px;
+    font-family: inherit;
+    /* background-color: white; */
+    background-color: #181b2b;
+    font-size: 14px;
+}
+
+.msj-filtro {
+    min-height: 18px;
+    margin: 12px 0 0;
+    color: #52719b;
+    font-size: 16px;
+}
+
+/*botones*/
+.btn {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccd3dc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: 15px;
+
+}
+
+.btn-filtrar {
+    /* background-color: #356bc0; */
+    background-color: #1e375f;
+    color: white;
+    border-color: #356bc0;
+    margin-top: 8px;
+}
+
+.btn-filtrar:hover {
+    background-color: #28559b;
+}
+
+.btn-reset {
+    /* background-color: #f0f3f7; */
+    background-color: #1d2b3e;
+    /* color: #243c60; */
+    color: #4871b0;
+}
+
+.btn-reset:hover {
+    /* background-color: #e4e9ef; */
+    background-color: #243b56;
+}
+
+.btn-agregar {
+    display: block;
+    margin-top: 16px;
+    text-align: center;
+    text-decoration: none;
+
+    /* background-color: #21854a; */
+    background-color: #1d6c3e;
+    border-color: #21854a;
+    color: white;
+}
+
+.btn-agregar:hover {
+    /* background-color: #196b3b; */
+    background-color: #1e874a;
+}
+
+
+/* Lista y tarjetas */
+.lista-incidentes {
+    flex: 1 1 0px;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.panel-izquierdo > h2,
+.panel-izquierdo > h3,
+.panel-izquierdo > form,
+.panel-izquierdo > .msj-filtro,
+.panel-izquierdo > .btn-agregar {
+    flex-shrink: 0;
+}
+
+.tarjeta-incidente {
+    margin-bottom: 10px;
+    padding: 10px;
+    /* background-color: #f4f6f9; */
+    background-color: #252943;
+    border: 1px solid #344255;
+    /* border: 1px solid #e1e6ed; */
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tarjeta-incidente:hover {
+    /* background-color: #e8eef8; */
+    background-color: #22273e;
+    border: 1px solid #243c60;
+}
+
+.tarjeta-incidente h4 {
+    margin: 0 0 8px;
+    /* color: #243c60; */
+    font-size: 15px;
+}
+
+.tarjeta-incidente p {
+    margin: 5px 0;
+    color: #a9c8f1;
+    font-size: 14px;
+}
+
+#mapa p {
+    color: #667085;
+}
+
+/* Mapa y Metricas */
+
+.mapa-metricas-columna {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 20px;
+    min-width: 0;
+    min-height: 0;
+}
+
+.metricas-generales {
+    padding: 20px;
+    /* background-color: white; */
+    background-color: #1b1e30;
+    border: 1px solid #344255;
+    /* border: 1px solid #dde3eb; */
+    border-radius: 10px;
+    box-shadow: 0 3px 10px #243c6010;
+}
+
+.metricas-generales h3 {
+    margin: 0 0 8px;
+    /* color: #243c60; */
+    color: #cfd1d3;
+    font-size: 14px;
+}
+
+.lista-metricas {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.metrica {
+    padding: 16px 8px;
+    /* background-color: #f0f4fa; */
+    background-color: #1b1e30;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.metrica span{
+    display: block;
+    /* color: #526174; */
+    color: #d7dde4;
+    font-size: 14px;
+}
+
+.metrica strong{
+    display: block;
+    margin-top: 8px;
+    /* color: #243c60; */
+    color: #d0d1d2;
+    font-size: 28px;
+}
+
+#titulo-mapa {
+    text-align: center;
+}
+
+#mapa {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    border: 1px solid #ccd3dc;
+    border-radius: 8px;
+}
+
+/* PopUps */
+.tarjeta-popUp {
+    min-width: 220px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    /* color: #526174; */
+    color: #131e2f;
+    overflow-wrap: anywhere;
+}
+
+.tarjeta-popUp h4 {
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #356bc0;
+    /* color: #243c60; */
+    color: #131e2f;
+    font-size: 17px;
+}
+
+.tarjeta-popUp .datos-popUp {
+    padding: 10px;
+    background-color: #f0f4fa;
+    border-radius: 5px;
+    white-space: pre-line;
+}
+
+/* Iconos en el mapa */
+.icono-leve {
+    /* filter: hue-rotate(-90deg); */
+    filter: grayscale(100%) brightness(1.10) sepia(100%) hue-rotate(105deg) saturate(350%) brightness(0.95);
+}
+
+.icono-grave {
+    filter: hue-rotate(140deg);
+}
+
+.icono-fatal {
+    filter: grayscale(100%) brightness(0.8) sepia(100%) hue-rotate(240deg) saturate(450%) brightness(1.02);
+}
+
+.icono-moderado{
+   filter: grayscale(100%) brightness(1.15) sepia(100%) hue-rotate(10deg) saturate(350%) brightness(1.08);
+}
+.icono-material{
+   filter: 0;
+}
+
+/* Leyenda mapa */
+.leyenda-mapa {
+    padding: 10px 12px;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px #00000030;
+    /* color: #243c60; */
+    color: #0c0c15;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.leyenda-mapa strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.leyenda-mapa span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    border-radius: 2px;
+    vertical-align: middle;
+}
+
+.color-leve {
+    background-color: #34d399;
+}
+
+.color-grave {
+    background-color: #fb7185;
+}
+
+.color-fatal {
+    background-color: #A855F7;
+}
+
+.color-moderado{
+    background-color: #fbbf24; 
+}
+
+.color-material {
+    background-color: #356bc0;
+
+/* CREATE */
+
+/*Formulario de registro de incidentes*/
+.registro-contenedor {
+    display: grid;
+    grid-template-columns: 450px minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 24px;
+    
+}
+
+/* FORMULARIO */
+.formulario-contenedor {
+    min-width: 0;
+    padding: 20px;
+    /* background-color: white;
+    border: 1px solid #dde3eb; */
+    background-color: #1b1e30;
+    border: 1px solid #344255;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px #243c6010;
+    
+}
+
+.formulario-contenedor h2 {
+    margin: 0 0 18px;
+    font-size: 20px;
+    text-align: center;
+    color: #243c60;
+}
+
+.formulario-contenedor form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formulario-contenedor label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.formulario-contenedor input, .formulario-contenedor select, .formulario-contenedor textarea {
+    width: 100%;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+    background-color: #181b2b;
+    border: 1px solid #344255;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.formulario-contenedor textarea {
+    resize: vertical;
+}
+
+.formulario-contenedor a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    color: #356bc0;
+    border: 1px solid #356bc0;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.formulario-contenedor a:hover {
+    text-decoration: underline;
+}
+
+/* MAPA REGISTRO */
+.registro-mapa {
+    background-color: #1b1e30;
+    border: 1px solid #344255;
+    /* background-color: white; */
+    padding: 20px;
+    /* border: 1px solid #dde3eb; */
+    border-radius: 10px;
+    min-width: 0;
+    box-shadow: 0 3px 10px #243c6010;
+}
+
+.registro-mapa h2 {
+    margin: 0 0 18px;
+    color: #243c60;
+    font-size: 20px;
+    text-align: center;
+}
+
+#mapa-seleccion {
+    width: 100%;
+    height: 700px;
+    background-color: #e4e9f0;
+    border-radius: 8px;
+}
+
+#seleccione-coordenadas {
+    display: block;
+    margin-top: 8px;     
+    color: #243c60;      
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;   
+}
+
+
+
+
+
+/* SHOW */
+/* Ver detalle en index */
+.enlace-detalle{
+    display: inline-block;
+    margin-top: 8px;
+    
+    padding: 6px 10px;
+    border-radius: 5px;
+    background-color: #356bc0;
+    color: white;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.enlace-detalle:hover {
+    background-color: #28559b;
+}
+
+.enlace-editar {
+    display: inline-block;
+    margin-top: 8px;
+    margin-left: 10px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    background-color: #356bc0;
+    color: white;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.enlace-editar:hover {
+    background-color: #28559b;
+}
+
+/* Detalle del incidente */
+.detalle-incidente {
+    max-width: 900px;
+    margin: 24px auto;
+    padding: 24px;
+    /* background-color: white;
+    border: 1px solid #dde3eb; */
+    background-color: #1b1e30;
+    border: 1px solid #344255;
+    border-radius: 10px;
+}
+
+.detalle-incidente h3 {
+    margin-bottom: 8px;
+}
+
+.detalle-incidente h2, .detalle-incidente h3 {
+    color: #243c60;
+}
+
+.detalle-incidente p {
+    color: #526174;
+    line-height: 1.6;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+
+
