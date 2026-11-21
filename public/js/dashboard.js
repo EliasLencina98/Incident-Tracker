@@ -177,7 +177,7 @@
 
         setearTexto("#kpi-moderados", kpis.moderados);
         setearTexto("#kpi-moderados-pct", `${kpis.moderados_pct}%`);
-        setearWidth("#bar-moderados", kpis.material_pct);
+        setearWidth("#bar-moderados", kpis.moderados_pct);
     }
 
     function iniciarMapa() {
@@ -347,7 +347,7 @@
             });
 
             if (!response.ok) {
-                throw new error(`Error HTTP ${response.status}`);
+                throw new Error(`Error HTTP ${response.status}`);
             }
 
             const data = await response.json();

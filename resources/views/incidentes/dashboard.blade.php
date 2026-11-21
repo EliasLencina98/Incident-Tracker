@@ -207,7 +207,7 @@
                     <h2>Analisis riesgo geografico (Mapa de calor)</h2>
                     <p class="panel-texto-secundario dash-subtitulo-sm">Vista rápida de puntos críticos en Añelo, Neuquén, Cipolletti y alrededores</p>
                 </div>
-                <button type="button" onclick="switchTab('mapa')" class="dash-link-btn">
+                <button type="button" onclick="" class="dash-link-btn">
                     <span>Abrir mapa completo</span>
                 </button>
             </div>
