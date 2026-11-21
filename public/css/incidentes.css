@@ -373,6 +373,9 @@ body {
 .icono-moderado{
    filter: grayscale(100%) brightness(1.15) sepia(100%) hue-rotate(10deg) saturate(350%) brightness(1.08);
 }
+.icono-material{
+   filter: 0;
+}
 
 /* Leyenda mapa */
 .leyenda-mapa {
@@ -416,7 +419,8 @@ body {
     background-color: #fbbf24; 
 }
 
-
+.color-material {
+    background-color: #356bc0;
 
 /* CREATE */
 
