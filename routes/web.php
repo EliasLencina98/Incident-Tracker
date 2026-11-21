@@ -6,7 +6,9 @@ use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\ChoferController;
 use App\Http\Controllers\UsuarioController;
 
-Route::view("/", "incidentes.dashboard")->name("incidentes.dashboard");
+Route::get('/dashboard', [IncidenteController::class, 'dashboard'])->name('incidentes.dashboard');
+Route::get('/incidentes/dashboard/datos', [IncidenteController::class, 'dashboardDatos'])->name('incidentes.dashboardDatos');
+
 Route::view("/mapa", "incidentes.mapa")->name("incidentes.mapa");
 
 Route::get("/incidentes", [IncidenteController::class, "index"])->name("incidentes.index");

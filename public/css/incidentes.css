@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    color: rgb(212, 205, 205);
+    /* color: rgb(212, 205, 205); */
 }
 
 body {
@@ -358,19 +358,20 @@ body {
 
 /* Iconos en el mapa */
 .icono-leve {
-    filter: hue-rotate(-90deg);
+    /* filter: hue-rotate(-90deg); */
+    filter: grayscale(100%) brightness(1.10) sepia(100%) hue-rotate(105deg) saturate(350%) brightness(0.95);
 }
 
 .icono-grave {
-    filter: hue-rotate(-150deg) brightness(135%) saturate(180%);
-}
-
-.icono-fatal {
     filter: hue-rotate(140deg);
 }
 
-.icono-material {
-    filter: none;
+.icono-fatal {
+    filter: grayscale(100%) brightness(0.8) sepia(100%) hue-rotate(240deg) saturate(450%) brightness(1.02);
+}
+
+.icono-moderado{
+   filter: grayscale(100%) brightness(1.15) sepia(100%) hue-rotate(10deg) saturate(350%) brightness(1.08);
 }
 
 /* Leyenda mapa */
@@ -400,22 +401,20 @@ body {
 }
 
 .color-leve {
-    background-color: #21854a;
+    background-color: #34d399;
 }
 
 .color-grave {
-    background-color: rgb(236, 236, 21);
+    background-color: #fb7185;
 }
 
 .color-fatal {
-    background-color: #c62828;
+    background-color: #A855F7;
 }
 
-.color-material {
-    background-color: #356bc0;
+.color-moderado{
+    background-color: #fbbf24; 
 }
-
-
 
 
 
